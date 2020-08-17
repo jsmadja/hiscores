@@ -21,6 +21,11 @@ public class AppController {
     private GameService gameService;
     private PlayerService playerService;
 
+    @RequestMapping("/")
+    public String getHome() {
+        return "OK";
+    }
+
     @RequestMapping("/ui/timeline")
     public List<TimelineItem> getTimeline() {
         return scoreService

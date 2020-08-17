@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.FetchType.EAGER;
 
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "game")
@@ -43,7 +44,7 @@ public class Game extends BaseModel<Game> {
     private List<Score> oneccs;
 
     @OrderBy("name")
-    @OneToMany(mappedBy = "game", cascade = PERSIST)
+    @OneToMany(mappedBy = "game", cascade = PERSIST, fetch = EAGER)
     private List<Platform> platforms;
 
     @OrderBy("sortOrder")
