@@ -39,7 +39,7 @@ public class Game extends BaseModel<Game> {
     private List<Score> allScores;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "game")
+    @OneToMany(mappedBy = "game", fetch = EAGER)
     @Where(clause = "onecc = true")
     private List<Score> oneccs;
 
