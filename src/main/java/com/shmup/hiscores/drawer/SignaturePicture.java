@@ -5,6 +5,7 @@ import com.shmup.hiscores.models.Score;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Optional;
 
 import static com.shmup.hiscores.drawer.RankingGameConfiguration.COLOR_SHMUP_TEXT;
 import static java.awt.Font.PLAIN;
@@ -20,8 +21,11 @@ public class SignaturePicture {
         FontMetrics fontMetrics = graphics.getFontMetrics();
         graphics.setColor(COLOR_SHMUP_TEXT);
         graphics.setFont(gameFont);
-        Score lastScore = player.getLastScore();
-        graphics.drawString(message(lastScore), 0, fontMetrics.getAscent());
+        Optional<Score> optionalLastScore = player.getLastScore();
+        if(optionalLastScore.isPresent()) {
+            Score lastScore = optionalLastScore.get();
+            graphics.drawString(message(lastScore), 0, fontMetrics.getAscent());
+        }
         return bi;
     }
 

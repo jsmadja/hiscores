@@ -48,10 +48,13 @@ public class Player extends BaseModel<Player> {
         updatedAt = new Date();
     }
 
-    public Score getLastScore() {
+    public Optional<Score> getLastScore() {
         List<Score> scores = new ArrayList<Score>(this.scores);
         Collections.sort(scores, (o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()));
-        return scores.get(0);
+        if(scores.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(scores.get(0));
     }
 
     public Versus getComparisonWith(Player p) {
