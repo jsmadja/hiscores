@@ -31,3 +31,6 @@ build/
 .vscode/
 
 mysql_data
+
+application-local.properties
+.mvn

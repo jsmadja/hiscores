@@ -34,23 +34,23 @@ public class UserFilter implements Filter {
         if (shmupCookie.isEmpty()) {
             return Player.guest;
         }
-        Player player = getConnectedPlayer(shmupCookie.get());
-        player.renewUpdateAt();
-        playerService.update(player);
-        return player;
+        Optional<Player> player;
+        Long shmupUserId = getShmupUserIdFrom(shmupCookie.get());
+        if (shmupUserId == null) {
+            return Player.guest;
+        }
+        player = Optional.of(playerService.findByShmupUserId(shmupUserId));
+        if (player.isPresent()) {
+            Player connectedPlayer = player.get();
+            connectedPlayer.renewUpdateAt();
+            playerService.update(connectedPlayer);
+            return connectedPlayer;
+        }
+        return Player.guest;
     }
 
     private Optional<Cookie> createDevCookie() {
         return Optional.of(new Cookie(SHMUP_COOKIE_NAME, ANZYMUS_SHMUP_USER_ID.toString()));
-    }
-
-    private Player getConnectedPlayer(Cookie shmupCookie) {
-        Long shmupUserId = getShmupUserIdFrom(shmupCookie);
-        Player player = playerService.findByShmupUserId(shmupUserId);
-        if (player == null) {
-            player = playerService.createNewPlayer(shmupUserId);
-        }
-        return player;
     }
 
     private Long getShmupUserIdFrom(Cookie shmupCookie) {

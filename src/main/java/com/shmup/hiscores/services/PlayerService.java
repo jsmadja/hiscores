@@ -1,7 +1,5 @@
 package com.shmup.hiscores.services;
 
-import com.shmup.hiscores.clients.ShmupClient;
-import com.shmup.hiscores.drawer.Images;
 import com.shmup.hiscores.drawer.MedalsPicture;
 import com.shmup.hiscores.models.Player;
 import com.shmup.hiscores.models.Score;
@@ -11,9 +9,9 @@ import com.shmup.hiscores.repositories.PlayerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -39,12 +37,6 @@ public class PlayerService {
 
     public void update(Player player) {
         playerRepository.save(player);
-    }
-
-    public Player createNewPlayer(Long shmupUserId) {
-        ShmupClient shmupClient = new ShmupClient();
-        String login = shmupClient.getLoginById(shmupUserId);
-        return this.findOrCreatePlayer(login, shmupUserId);
     }
 
     public Versus getBestVersus(Player player) {
