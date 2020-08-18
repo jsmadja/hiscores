@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.collections.map.MultiKeyMap;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -40,6 +42,7 @@ public class Game extends BaseModel<Game> {
 
     @JsonIgnore
     @OneToMany(mappedBy = "game", fetch = EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @Where(clause = "onecc = true")
     private List<Score> oneccs;
 
