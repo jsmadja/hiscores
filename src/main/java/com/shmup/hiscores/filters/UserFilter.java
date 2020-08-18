@@ -29,46 +29,35 @@ public class UserFilter implements Filter {
     @Autowired
     private PlayerService playerService;
 
-    private Player getPlayerFromCookie(HttpServletRequest request) {
-        Optional<Cookie> shmupCookie = isDev() ? createDevCookie() : getShmupCookieFrom(request);
-        if (shmupCookie.isEmpty()) {
-            return Player.guest;
-        }
-        Optional<Player> player;
-        Long shmupUserId = getShmupUserIdFrom(shmupCookie.get());
-        if (shmupUserId == null) {
-            return Player.guest;
-        }
-        player = Optional.of(playerService.findByShmupUserId(shmupUserId));
-        if (player.isPresent()) {
-            Player connectedPlayer = player.get();
-            connectedPlayer.renewUpdateAt();
-            playerService.update(connectedPlayer);
-            return connectedPlayer;
-        }
-        return Player.guest;
-    }
-
-    private Optional<Cookie> createDevCookie() {
-        return Optional.of(new Cookie(SHMUP_COOKIE_NAME, ANZYMUS_SHMUP_USER_ID.toString()));
-    }
-
-    private Long getShmupUserIdFrom(Cookie shmupCookie) {
-        return Long.parseLong(shmupCookie.getValue());
-    }
-
-    private Optional<Cookie> getShmupCookieFrom(HttpServletRequest request) {
-        return Arrays.stream(request.getCookies()).filter(c -> c.getName().equals(SHMUP_COOKIE_NAME)).findFirst();
-    }
-
     private boolean isDev() {
         return Boolean.parseBoolean(devMode);
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        Player player = this.getPlayerFromCookie((HttpServletRequest) request);
+        Player player;
+        Optional<Cookie> shmupCookie = isDev() ? Optional.of(new Cookie(SHMUP_COOKIE_NAME, ANZYMUS_SHMUP_USER_ID.toString())) : getShmupCookie((HttpServletRequest) request);
+        if (shmupCookie.isEmpty()) {
+            player = Player.guest;
+        } else {
+            long shmupUserId = Long.parseLong(shmupCookie.get().getValue());
+            player = playerService.findByShmupUserId(shmupUserId);
+            if (player != null) {
+                player.renewUpdateAt();
+                playerService.update(player);
+            } else {
+                player = Player.guest;
+            }
+        }
         request.setAttribute("player", player);
         filterChain.doFilter(request, response);
+    }
+
+    private Optional<Cookie> getShmupCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) {
+            return Optional.empty();
+        }
+        return Arrays.stream(cookies).filter(c -> c.getName().equals(SHMUP_COOKIE_NAME)).findFirst();
     }
 }
