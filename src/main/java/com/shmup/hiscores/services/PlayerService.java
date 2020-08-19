@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
+@Deprecated
 @Service
 @AllArgsConstructor
 public class PlayerService {

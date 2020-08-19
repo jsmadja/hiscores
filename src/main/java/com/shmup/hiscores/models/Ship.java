@@ -12,6 +12,7 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+@Deprecated
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data

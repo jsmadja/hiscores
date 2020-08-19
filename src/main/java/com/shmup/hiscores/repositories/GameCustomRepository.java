@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 
+@Deprecated
 @Repository
 public class GameCustomRepository {
 

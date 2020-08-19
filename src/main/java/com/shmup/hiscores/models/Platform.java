@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
+@Deprecated
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data

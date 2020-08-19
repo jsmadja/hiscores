@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
+@Deprecated
 @AllArgsConstructor
 @Data
 public class ScoreDTO {

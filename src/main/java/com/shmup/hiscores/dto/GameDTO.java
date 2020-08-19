@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.util.List;
 
+@Deprecated
 @AllArgsConstructor
 @Data
 public class GameDTO {

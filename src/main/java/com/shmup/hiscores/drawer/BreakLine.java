@@ -4,6 +4,7 @@ import java.awt.*;
 
 import static com.shmup.hiscores.drawer.RankingGameConfiguration.*;
 
+@Deprecated
 public class BreakLine implements PictureLine {
 
     @Override

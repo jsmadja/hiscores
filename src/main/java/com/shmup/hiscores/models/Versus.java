@@ -8,6 +8,7 @@ import java.util.List;
 
 import static java.math.RoundingMode.HALF_UP;
 
+@Deprecated
 public class Versus {
 
     public Player player1;

@@ -5,6 +5,7 @@ import com.shmup.hiscores.repositories.StageRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+@Deprecated
 @Service
 @AllArgsConstructor
 public class StageService {

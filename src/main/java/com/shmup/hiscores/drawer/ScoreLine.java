@@ -10,6 +10,7 @@ import static java.awt.Color.*;
 import static java.awt.Font.*;
 import static org.apache.commons.lang3.StringUtils.*;
 
+@Deprecated
 public class ScoreLine implements PictureLine {
 
     private static final int fontWidth = 12;

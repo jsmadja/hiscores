@@ -11,6 +11,7 @@ import java.util.List;
 import static java.awt.RenderingHints.*;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
+@Deprecated
 public class RankingPicture {
 
     public static BufferedImage createRankingPicture(Game game, List<Ranking> rankings) {

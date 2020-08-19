@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+@Deprecated
 public class Images {
 
     public static byte[] toBytes(BufferedImage image) throws IOException {

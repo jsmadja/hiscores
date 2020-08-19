@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+@Deprecated
 @AllArgsConstructor
 @Data
 public class ScoreForm {

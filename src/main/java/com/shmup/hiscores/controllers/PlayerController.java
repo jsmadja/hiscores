@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 
 import static org.apache.commons.lang3.StringUtils.*;
 
+@Deprecated
 @AllArgsConstructor
 @RestController
 public class PlayerController {

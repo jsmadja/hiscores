@@ -11,6 +11,7 @@ import static com.shmup.hiscores.drawer.RankingGameConfiguration.COLOR_SHMUP_TEX
 import static java.awt.Font.PLAIN;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
+@Deprecated
 public class VersusPicture {
     public static final int WIDTH = 724;
     private final static Font gameFont = new Font("Lucida", PLAIN, 11);

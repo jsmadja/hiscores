@@ -12,6 +12,7 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
+@Deprecated
 @Repository
 public class PlayerCustomRepository {
 

@@ -9,6 +9,7 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import java.util.*;
 
+@Deprecated
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data

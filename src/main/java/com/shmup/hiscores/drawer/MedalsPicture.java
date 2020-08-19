@@ -14,6 +14,7 @@ import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static org.apache.commons.lang3.StringUtils.leftPad;
 
+@Deprecated
 public class MedalsPicture {
 
     private final static Font gameFont = new Font("Verdana", BOLD, 11);

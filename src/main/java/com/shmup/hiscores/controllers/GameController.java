@@ -18,6 +18,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+@Deprecated
 @AllArgsConstructor
 @RestController
 public class GameController {

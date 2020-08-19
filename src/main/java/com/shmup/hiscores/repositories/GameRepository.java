@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
+@Deprecated
 public interface GameRepository extends CrudRepository<Game, Long> {
     @Cacheable("games")
     List<Game> findByOrderByTitleAsc();

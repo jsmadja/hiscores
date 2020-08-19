@@ -15,6 +15,7 @@ import java.util.function.Predicate;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 
+@Deprecated
 @AllArgsConstructor
 @Service
 public class GameService {

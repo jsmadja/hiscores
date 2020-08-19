@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.util.Locale;
 
+@Deprecated
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data

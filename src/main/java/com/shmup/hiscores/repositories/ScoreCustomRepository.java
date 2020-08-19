@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Optional.*;
 
+@Deprecated
 @Repository
 public class ScoreCustomRepository {
 

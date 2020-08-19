@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Date;
 
+@Deprecated
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

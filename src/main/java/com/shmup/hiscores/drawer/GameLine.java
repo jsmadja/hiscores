@@ -12,6 +12,7 @@ import static com.shmup.hiscores.drawer.RankingGameConfiguration.width;
 import static java.awt.Font.BOLD;
 import static java.awt.Font.ITALIC;
 
+@Deprecated
 public class GameLine implements PictureLine {
 
     private final static Font gameFont = new Font("Liberation Mono", BOLD | ITALIC, 16);

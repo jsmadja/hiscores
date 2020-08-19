@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Deprecated
 @AllArgsConstructor
 @RestController
 public class PlatformsController {

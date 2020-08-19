@@ -4,6 +4,7 @@ import com.shmup.hiscores.models.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+@Deprecated
 @AllArgsConstructor
 @Data
 public class TimelineItem {

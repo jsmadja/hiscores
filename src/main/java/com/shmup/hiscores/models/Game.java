@@ -16,6 +16,7 @@ import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.EAGER;
 
+@Deprecated
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "game")
 @Entity
