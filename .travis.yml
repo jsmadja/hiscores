@@ -1,0 +1,7 @@
+language: java
+
+services:
+  - docker
+
+jdk:
+  - openjdk13

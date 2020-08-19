@@ -1,9 +1,16 @@
-version: 2.1
-
-orbs:
-  maven: circleci/maven@0.0.12
+version: 2 # use CircleCI 2.0
+machine: true
+jobs: # a collection of steps
+  build:
+    docker: # run the steps with Docker
+      - image: circleci/buildpack-deps:xenial-dind
+      - image: circleci/openjdk:13-buster # ...with this image as the primary container; this is where all `steps` will run
+    steps: # a collection of executable commands
+      - checkout # check out source code to working directory
+      - run: mvn -B clean install
 
 workflows:
-  maven_test:
+  version: 2
+  workflow:
     jobs:
-      - maven/test # checkout, build, test, and upload test results
+      - build

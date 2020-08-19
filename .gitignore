@@ -33,4 +33,3 @@ build/
 mysql_data
 
 application-local.properties
-.mvn
