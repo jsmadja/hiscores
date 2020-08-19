@@ -249,5 +249,3 @@ create index name
 
 create index sort_order
     on stage (sort_order);
-
-SHOW GRANTS;

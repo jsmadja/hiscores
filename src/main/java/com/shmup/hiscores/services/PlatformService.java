@@ -1,6 +1,6 @@
 package com.shmup.hiscores.services;
 
-import com.shmup.hiscores.dto.PlatformDTO;
+import com.shmup.hiscores.dto.PlatformWithGameCount;
 import com.shmup.hiscores.models.Platform;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,15 +14,12 @@ public class PlatformService {
 
     private PlatformRepository platformRepository;
 
+    @Deprecated
     public Platform findById(Long platformId) {
         return platformRepository.findById(platformId).get();
     }
 
-    public List<String> findAll() {
-        return platformRepository.findDistinctByName();
-    }
-
-    public List<PlatformDTO> findPlatformsWithGameCount() {
+    public List<PlatformWithGameCount> findPlatformsWithGameCount() {
         return platformRepository.findPlatformsWithGameCount();
     }
 }

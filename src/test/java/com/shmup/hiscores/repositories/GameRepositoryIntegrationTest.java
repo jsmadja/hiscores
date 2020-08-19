@@ -18,7 +18,7 @@ public class GameRepositoryIntegrationTest extends ContainerDatabaseTest {
     @Test
     public void should_load_all_games() {
         List<Game> games = gameRepository.findByOrderByTitleAsc();
-        Assertions.assertThat(games).hasSize(583);
+        Assertions.assertThat(games).hasSize(1);
     }
 
 }
