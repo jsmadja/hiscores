@@ -48,6 +48,7 @@ public class Player extends BaseModel<Player> {
         updatedAt = new Date();
     }
 
+    @Deprecated
     public Optional<Score> getLastScore() {
         List<Score> scores = new ArrayList<Score>(this.scores);
         Collections.sort(scores, (o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()));

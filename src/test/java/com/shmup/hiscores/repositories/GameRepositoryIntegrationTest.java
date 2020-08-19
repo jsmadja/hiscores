@@ -1,5 +1,6 @@
 package com.shmup.hiscores.repositories;
 
+import com.shmup.hiscores.ContainerDatabaseTest;
 import com.shmup.hiscores.models.Game;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 @SpringBootTest
-public class GameRepositoryIntegrationTest {
+public class GameRepositoryIntegrationTest extends ContainerDatabaseTest {
 
     @Autowired
     private GameRepository gameRepository;
