@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.FetchType.LAZY;
 
 @Deprecated
 @EqualsAndHashCode(callSuper = true)
@@ -42,13 +43,13 @@ public class Game extends BaseModel<Game> {
     private List<Score> allScores;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "game", fetch = EAGER)
+    @OneToMany(mappedBy = "game")
     @Fetch(value = FetchMode.SUBSELECT)
     @Where(clause = "onecc = true")
     private List<Score> oneccs;
 
     @OrderBy("name")
-    @OneToMany(mappedBy = "game", cascade = PERSIST, fetch = EAGER)
+    @OneToMany(mappedBy = "game", cascade = PERSIST)
     private List<Platform> platforms;
 
     @OrderBy("sortOrder")

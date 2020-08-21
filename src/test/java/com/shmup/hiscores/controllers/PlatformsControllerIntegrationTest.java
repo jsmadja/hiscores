@@ -25,4 +25,10 @@ class PlatformsControllerIntegrationTest extends ContainerDatabaseTest {
         ;
     }
 
+    @Test
+    void getGamesByPlatform() throws Exception {
+        this.mvc.perform(get("/platforms/NG/games"))
+                .andExpect(jsonPath("$[0].title").value("Strikers 1945 PLUS"));
+    }
+
 }

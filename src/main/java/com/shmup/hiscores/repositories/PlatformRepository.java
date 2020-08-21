@@ -1,4 +1,4 @@
-package com.shmup.hiscores.services;
+package com.shmup.hiscores.repositories;
 
 import com.shmup.hiscores.dto.PlatformWithGameCount;
 import com.shmup.hiscores.models.Platform;

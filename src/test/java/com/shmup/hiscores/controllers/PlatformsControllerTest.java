@@ -1,6 +1,7 @@
 package com.shmup.hiscores.controllers;
 
 import com.shmup.hiscores.dto.PlatformWithGameCount;
+import com.shmup.hiscores.models.Game;
 import com.shmup.hiscores.services.PlatformService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,6 +33,17 @@ class PlatformsControllerTest {
 
         assertThat(allPlatforms).hasSize(1);
         assertThat(allPlatforms.get(0)).isEqualTo(platformWithGameCount);
+    }
+
+    @Test
+    public void should_get_games_by_platform() {
+        Game game = Mockito.mock(Game.class);
+        when(platformService.findGamesByPlatform("NG")).thenReturn(List.of(game));
+
+        List<Game> allGames = platformsController.findGamesByPlatform("NG");
+
+        assertThat(allGames).hasSize(1);
+        assertThat(allGames.get(0)).isEqualTo(game);
     }
 
 }
