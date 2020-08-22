@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
 
-@Deprecated
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
@@ -24,8 +23,11 @@ public class UserFilter implements Filter {
     @Value("${api.dev-mode}")
     private String devMode;
 
-    private static final Long ANZYMUS_SHMUP_USER_ID = 33489L;
-    private static final String SHMUP_COOKIE_NAME = "phpbb3_axtcz_u";
+    @Value("${api.shmup-cookie-name}")
+    private String shmupCookieName;
+
+    @Value("${api.shmup-cookie-userid}")
+    private String shmupUserId;
 
     @Autowired
     private PlayerService playerService;
@@ -36,18 +38,15 @@ public class UserFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        Player player;
-        Optional<Cookie> shmupCookie = isDev() ? Optional.of(new Cookie(SHMUP_COOKIE_NAME, ANZYMUS_SHMUP_USER_ID.toString())) : getShmupCookie((HttpServletRequest) request);
-        if (shmupCookie.isEmpty()) {
-            player = Player.guest;
-        } else {
+        Player player = Player.guest;
+        Optional<Cookie> shmupCookie = isDev() ? Optional.of(new Cookie(shmupCookieName, shmupUserId)) : getShmupCookie((HttpServletRequest) request);
+        if (shmupCookie.isPresent()) {
             long shmupUserId = Long.parseLong(shmupCookie.get().getValue());
-            player = playerService.findByShmupUserId(shmupUserId);
-            if (player != null) {
-                player.renewUpdateAt();
-                playerService.update(player);
-            } else {
-                player = Player.guest;
+            Player dbPlayer = playerService.findByShmupUserId(shmupUserId);
+            if (dbPlayer != null) {
+                dbPlayer.renewUpdateAt();
+                playerService.update(dbPlayer);
+                player = dbPlayer;
             }
         }
         request.setAttribute("player", player);
@@ -59,6 +58,6 @@ public class UserFilter implements Filter {
         if (cookies == null) {
             return Optional.empty();
         }
-        return Arrays.stream(cookies).filter(c -> c.getName().equals(SHMUP_COOKIE_NAME)).findFirst();
+        return Arrays.stream(cookies).filter(c -> c.getName().equals(shmupCookieName)).findFirst();
     }
 }

@@ -5,10 +5,10 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
-public class ContainerDatabaseTest {
+public abstract class ContainerDatabaseTest {
 
     @Container
-    public static  MySQLContainer mysql;
+    public static final MySQLContainer mysql;
 
     static {
         mysql = new MySQLContainer<>("mysql:5.7")

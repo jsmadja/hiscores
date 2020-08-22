@@ -86,4 +86,28 @@ public class Player extends BaseModel<Player> {
     public boolean isAuthenticated() {
         return !this.equals(guest);
     }
+
+    public boolean isAdministrator() {
+        return id == 1          // anzymus
+                || id == 42     // mickey
+                || id == 137    // trizeal
+                || id == 705    // Vzurkr
+                || id == 191    // lerebours
+                || id == 7      // SL
+                || id == 231    // MKNIGHT
+                || id == 269    // Yami
+                || id == 30     // shadow gallery
+                || id == 116    // Doudinou
+                || id == 150    // Undef
+                || id == 779    // Kat
+                || id == 159    // Cormano
+                || id == 226    // Radigo
+                || id == 57     // Akaimakai
+                || id == 223    // Guts
+                ;
+    }
+
+    public boolean isSuperAdministrator() {
+        return id == 1;
+    }
 }

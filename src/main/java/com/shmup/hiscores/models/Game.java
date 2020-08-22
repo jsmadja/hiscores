@@ -1,8 +1,7 @@
 package com.shmup.hiscores.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.apache.commons.collections.map.MultiKeyMap;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -22,6 +21,9 @@ import static javax.persistence.FetchType.LAZY;
 @Table(name = "game")
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Game extends BaseModel<Game> {
 
     private String thread;

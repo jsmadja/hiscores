@@ -6,25 +6,32 @@ import com.shmup.hiscores.drawer.RankingPicture;
 import com.shmup.hiscores.dto.*;
 import com.shmup.hiscores.models.Game;
 import com.shmup.hiscores.models.Platform;
+import com.shmup.hiscores.models.Player;
 import com.shmup.hiscores.services.GameService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.javatuples.Pair;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
-@Deprecated
 @AllArgsConstructor
 @RestController
 public class GameController {
 
     private GameService gameService;
 
+    @Deprecated
     @RequestMapping("/ui/games/names")
     public Iterable<Pair<Long, String>> allIdAndName() {
         return Lists
@@ -34,6 +41,7 @@ public class GameController {
                 .collect(toList());
     }
 
+    @Deprecated
     @RequestMapping("/games")
     public List<GameDTO> all() {
         return gameService
@@ -43,6 +51,7 @@ public class GameController {
                 .collect(toList());
     }
 
+    @Deprecated
     private GameDTO toGameDTO(Game game) {
         return new GameDTO(
                 game.getCover(),
@@ -55,15 +64,21 @@ public class GameController {
     }
 
     @PostMapping("/games")
-    public Game createGame(@RequestBody GameForm gameForm) {
-        return gameService.createGame(gameForm);
+    @ApiOperation(value = "create a new game")
+    public ResponseEntity<Game> createGame(@RequestAttribute(value = "player") Player player, @ApiParam(value = "The game to create", required = true) @Valid @RequestBody GameForm gameForm) {
+        if (player.isAdministrator()) {
+            return new ResponseEntity<>(gameService.createGame(gameForm), CREATED);
+        }
+        return new ResponseEntity<>(UNAUTHORIZED);
     }
 
+    @Deprecated
     @RequestMapping("/games/{id}")
     public Game getById(@PathVariable("id") Long id) {
         return gameService.findById(id);
     }
 
+    @Deprecated
     @RequestMapping("/games/{id}/rankings")
     public List<RankingDTO> getRankingsById(@PathVariable("id") Long id) {
         Game game = gameService.findById(id);
@@ -99,6 +114,7 @@ public class GameController {
                 .collect(toList());
     }
 
+    @Deprecated
     @RequestMapping("/game/{id}/ranking.png")
     public void getRankingPicture(@PathVariable("id") Long id, HttpServletResponse response) throws IOException {
         Game game = gameService.findById(id);

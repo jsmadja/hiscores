@@ -15,7 +15,6 @@ import java.util.function.Predicate;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 
-@Deprecated
 @AllArgsConstructor
 @Service
 public class GameService {
@@ -25,10 +24,12 @@ public class GameService {
 
     private ScoreRepository scoreRepository;
 
+    @Deprecated
     public List<Game> findAll() {
         return gameRepository.findByOrderByTitleAsc();
     }
 
+    @Deprecated
     public void recomputeAllRankings(Game game) {
         for (Score score : game.getAllScores()) {
             score.setRank(null);
@@ -37,11 +38,13 @@ public class GameService {
         updateRankingsOf(game);
     }
 
+    @Deprecated
     public void recomputeRanking(Game game, final Score referenceScore) {
         resetRankOfAllScoresInRanking(game, referenceScore);
         updateRankingsOf(game);
     }
 
+    @Deprecated
     private void resetRankOfAllScoresInRanking(Game game, Score referenceScore) {
         Predicate<Score> isInSameRanking = input -> input.hasDifficulty(referenceScore.getDifficulty()) && input.hasMode(referenceScore.getMode());
         List<Score> scores = game.getScores();
@@ -55,6 +58,7 @@ public class GameService {
         }
     }
 
+    @Deprecated
     public List<Ranking> getRankingsOf(Game game) {
         List<Ranking> rankings = new ArrayList<>();
         if (game.isGeneralRanking()) {
@@ -82,6 +86,7 @@ public class GameService {
         return rankings;
     }
 
+    @Deprecated
     public List<Ranking> updateRankingsOf(Game game) {
         List<Ranking> rankings = new ArrayList<>();
         if (game.isGeneralRanking()) {
@@ -134,6 +139,7 @@ public class GameService {
         return keepBestScoreByVIPPlayer(scores);
     }
 
+    @Deprecated
     public Collection<Score> findBestScoresByVIPPlayers(Game game, Difficulty difficulty, Mode mode) {
         List<Score> scores = gameCustomRepository.findBestScoresByVIPPlayers(game, difficulty, mode);
         return keepBestScoreByVIPPlayer(scores);
@@ -153,10 +159,12 @@ public class GameService {
         }).collect(toList());
     }
 
+    @Deprecated
     public Game findById(Long gameId) {
         return gameRepository.findById(gameId).get();
     }
 
+    @Deprecated
     public long getGamesCount() {
         return gameRepository.count();
     }
@@ -210,12 +218,14 @@ public class GameService {
                     return stage;
                 })
                 .collect(toList()));
-        game.setPlatforms(stream(gameForm.getPlatforms()).map(platformName -> {
-            Platform platform = new Platform();
-            platform.setGame(game);
-            platform.setName(platformName);
-            return platform;
-        }).collect(toList()));
+        game.setPlatforms(stream(gameForm
+                .getPlatforms())
+                .map(platformName -> {
+                    Platform platform = new Platform();
+                    platform.setGame(game);
+                    platform.setName(platformName);
+                    return platform;
+                }).collect(toList()));
         return gameRepository.save(game);
     }
 }
