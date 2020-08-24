@@ -22,7 +22,7 @@ public class AppController {
     private GameService gameService;
     private PlayerService playerService;
 
-    @RequestMapping("/api")
+    @RequestMapping("/")
     public String getHome() {
         return "OK";
     }

@@ -33,7 +33,7 @@ public class PlayerController {
     private StageService stageService;
     private DifficultyService difficultyService;
 
-    @RequestMapping("/api/me")
+    @RequestMapping("/me")
     public Player me(@RequestAttribute("player") Player player) {
         return player;
     }
