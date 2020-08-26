@@ -6,10 +6,11 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import java.util.*;
 
-@Deprecated
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
@@ -53,12 +54,13 @@ public class Player extends BaseModel<Player> {
     public Optional<Score> getLastScore() {
         List<Score> scores = new ArrayList<Score>(this.scores);
         Collections.sort(scores, (o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()));
-        if(scores.isEmpty()) {
+        if (scores.isEmpty()) {
             return Optional.empty();
         }
         return Optional.of(scores.get(0));
     }
 
+    @Deprecated
     public Versus getComparisonWith(Player p) {
         Versus versus = new Versus(this, p);
         List<Score> scores = this.scores;

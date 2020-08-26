@@ -6,18 +6,16 @@ import lombok.*;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-@Deprecated
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Mode extends BaseModel<Mode> {
+public class Mode extends BaseModel<Mode> implements SortableSetting {
 
     private String name;
 
-    @JsonIgnore
     private Long sortOrder;
 
     @JsonIgnore

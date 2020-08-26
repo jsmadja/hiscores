@@ -12,11 +12,10 @@ import javax.persistence.ManyToOne;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Difficulty extends BaseModel<Difficulty> {
+public class Difficulty extends BaseModel<Difficulty> implements SortableSetting {
 
     private String name;
 
-    @JsonIgnore
     private Long sortOrder;
 
     @JsonIgnore

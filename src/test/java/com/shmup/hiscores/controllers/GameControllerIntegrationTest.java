@@ -2,6 +2,8 @@ package com.shmup.hiscores.controllers;
 
 import com.shmup.hiscores.ContainerDatabaseTest;
 import com.shmup.hiscores.dto.GameForm;
+import com.shmup.hiscores.dto.GameSetting;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +14,8 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.http.Cookie;
 
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.Is.isA;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -21,6 +25,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class GameControllerIntegrationTest extends ContainerDatabaseTest {
+
+    private static final long BLACK_LABEL_MODE_ID = 2L;
+    private static final long ORIGINAL_DIFFICULTY_ID = 4L;
 
     @Autowired
     private MockMvc mvc;
@@ -75,7 +82,7 @@ public class GameControllerIntegrationTest extends ContainerDatabaseTest {
                 .ships(new String[]{"Type A"})
                 .stages(new String[]{"1"})
                 .build();
-        Cookie cookie = new Cookie(shmupCookieName, shmupUserId);
+        Cookie cookie = createShmupCookie();
         this.mvc.perform(post("/games")
                 .cookie(cookie)
                 .contentType(APPLICATION_JSON)
@@ -83,6 +90,75 @@ public class GameControllerIntegrationTest extends ContainerDatabaseTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", isA(Integer.class)))
                 .andExpect(content().contentType(APPLICATION_JSON));
+    }
+
+    @NotNull
+    private Cookie createShmupCookie() {
+        return new Cookie(shmupCookieName, shmupUserId);
+    }
+
+    @Test
+    void addMode() throws Exception {
+        this.mvc.perform(post("/games/1/modes")
+                .cookie(createShmupCookie())
+                .contentType(APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(GameSetting.builder().value("Arcade").build())))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.modes[*].name", contains("Black Label", "Arcade")));
+    }
+
+    @Test
+    void addMode_after_another_mode() throws Exception {
+        this.mvc.perform(post("/games/1/modes")
+                .cookie(createShmupCookie())
+                .contentType(APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(GameSetting.builder().value("Arcade X").afterValue(BLACK_LABEL_MODE_ID).build())))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.modes[*].name", hasItem("Arcade X")));
+
+    }
+
+    @Test
+    void addDifficulty_after_another_difficulty() throws Exception {
+        this.mvc.perform(post("/games/1/difficulties")
+                .cookie(createShmupCookie())
+                .contentType(APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(GameSetting.builder().value("Easy").afterValue(ORIGINAL_DIFFICULTY_ID).build())))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.difficulties[*].name", contains("Original", "Easy")))
+                .andExpect(jsonPath("$.difficulties[*].sortOrder", contains(1, 11)));
+    }
+
+    @Test
+    void addShip() throws Exception {
+        this.mvc.perform(post("/games/1/ships")
+                .cookie(createShmupCookie())
+                .contentType(APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(GameSetting.builder().value("Type A").build())))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.ships[*].name", contains("Type A")))
+                .andExpect(jsonPath("$.ships[*].sortOrder", contains(1)));
+    }
+
+    @Test
+    void addStage() throws Exception {
+        this.mvc.perform(post("/games/1/stages")
+                .cookie(createShmupCookie())
+                .contentType(APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(GameSetting.builder().value("2-ALL").build())))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.stages[*].name", contains("2-ALL")))
+                .andExpect(jsonPath("$.stages[*].sortOrder", contains(1)));
+    }
+
+    @Test
+    void addPlatforms() throws Exception {
+        this.mvc.perform(post("/games/1/platforms")
+                .cookie(createShmupCookie())
+                .contentType(APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(new String[]{"PS4", "PS1"})))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.platforms[*].name", contains("NG", "PCB", "PS1", "PS4", "X360")));
     }
 
 }

@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
 
 @SpringBootTest
 public class GameRepositoryIntegrationTest extends ContainerDatabaseTest {
@@ -54,6 +54,81 @@ public class GameRepositoryIntegrationTest extends ContainerDatabaseTest {
 
         assertThat(savedGame.getDifficulties()).hasSize(1);
         assertThat(savedGame.getDifficulties().get(0)).extracting("name", "sortOrder").contains("Easy", 1L);
+    }
+
+    @Test
+    public void should_add_mode_to_game() {
+        Game game = Game.builder()
+                .modes(new ArrayList<>())
+                .build();
+        Game savedGame = gameRepository.save(game);
+
+        Mode mode = Mode.builder().game(savedGame).sortOrder(1L).name("Arcade").build();
+        savedGame.add(mode);
+
+        Game updatedGame = gameRepository.save(savedGame);
+        assertThat(updatedGame.getModes()).hasSize(1);
+        assertThat(updatedGame.getModes().get(0)).extracting("name", "sortOrder", "scoreType").contains("Arcade", 1L, null);
+    }
+
+    @Test
+    public void should_add_difficulty_to_game() {
+        Game game = Game.builder()
+                .difficulties(new ArrayList<>())
+                .build();
+        Game savedGame = gameRepository.save(game);
+
+        Difficulty difficulty = Difficulty.builder().game(savedGame).sortOrder(1L).name("Easy").build();
+        savedGame.add(difficulty);
+
+        Game updatedGame = gameRepository.save(savedGame);
+        assertThat(updatedGame.getDifficulties()).hasSize(1);
+        assertThat(updatedGame.getDifficulties().get(0)).extracting("name", "sortOrder").contains("Easy", 1L);
+    }
+
+    @Test
+    public void should_add_stage_to_game() {
+        Game game = Game.builder()
+                .stages(new ArrayList<>())
+                .build();
+        Game savedGame = gameRepository.save(game);
+
+        Stage stage = Stage.builder().game(savedGame).sortOrder(1L).name("1").build();
+        savedGame.add(stage);
+
+        Game updatedGame = gameRepository.save(savedGame);
+        assertThat(updatedGame.getStages()).hasSize(1);
+        assertThat(updatedGame.getStages().get(0)).extracting("name", "sortOrder").contains("1", 1L);
+    }
+
+    @Test
+    public void should_add_ship_to_game() {
+        Game game = Game.builder()
+                .ships(new ArrayList<>())
+                .build();
+        Game savedGame = gameRepository.save(game);
+
+        Ship ship = Ship.builder().game(savedGame).sortOrder(1L).name("Type A").build();
+        savedGame.add(ship);
+
+        Game updatedGame = gameRepository.save(savedGame);
+        assertThat(updatedGame.getShips()).hasSize(1);
+        assertThat(updatedGame.getShips().get(0)).extracting("name", "sortOrder").contains("Type A", 1L);
+    }
+
+    @Test
+    public void should_add_platform_to_game() {
+        Game game = Game.builder()
+                .platforms(new ArrayList<>())
+                .build();
+        Game savedGame = gameRepository.save(game);
+
+        Platform platform = Platform.builder().game(savedGame).name("NG").build();
+        savedGame.add(platform);
+
+        Game updatedGame = gameRepository.save(savedGame);
+        assertThat(updatedGame.getPlatforms()).hasSize(1);
+        assertThat(updatedGame.getPlatforms().get(0).getName()).isEqualTo("NG");
     }
 
 }

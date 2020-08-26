@@ -1,22 +1,21 @@
 package com.shmup.hiscores.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.shmup.hiscores.dto.GameSetting;
 import lombok.*;
 import org.apache.commons.collections.map.MultiKeyMap;
 import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.CascadeType.PERSIST;
+import static java.util.Comparator.comparing;
+import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.EAGER;
-import static javax.persistence.FetchType.LAZY;
+import static org.hibernate.annotations.FetchMode.SUBSELECT;
 
-@Deprecated
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "game")
 @Entity
@@ -46,34 +45,40 @@ public class Game extends BaseModel<Game> {
 
     @JsonIgnore
     @OneToMany(mappedBy = "game")
-    @Fetch(value = FetchMode.SUBSELECT)
+    @Fetch(SUBSELECT)
     @Where(clause = "onecc = true")
     private List<Score> oneccs;
 
     @OrderBy("name")
-    @OneToMany(mappedBy = "game", cascade = PERSIST)
+    @OneToMany(mappedBy = "game", cascade = {PERSIST, MERGE}, fetch = EAGER)
+    @Fetch(SUBSELECT)
     private List<Platform> platforms;
 
     @OrderBy("sortOrder")
-    @OneToMany(mappedBy = "game", cascade = PERSIST)
+    @OneToMany(mappedBy = "game", cascade = {PERSIST, MERGE}, fetch = EAGER)
+    @Fetch(SUBSELECT)
     private List<Difficulty> difficulties;
 
     @OrderBy("sortOrder")
-    @OneToMany(mappedBy = "game", cascade = PERSIST)
+    @OneToMany(mappedBy = "game", cascade = {PERSIST, MERGE}, fetch = EAGER)
+    @Fetch(SUBSELECT)
     private List<Mode> modes;
 
     @OrderBy("sortOrder")
-    @OneToMany(mappedBy = "game", cascade = PERSIST)
+    @OneToMany(mappedBy = "game", cascade = {PERSIST, MERGE}, fetch = EAGER)
+    @Fetch(SUBSELECT)
     private List<Ship> ships;
 
     @OrderBy("sortOrder")
-    @OneToMany(mappedBy = "game", cascade = PERSIST)
+    @OneToMany(mappedBy = "game", cascade = {PERSIST, MERGE}, fetch = EAGER)
+    @Fetch(SUBSELECT)
     private List<Stage> stages;
 
     @JsonIgnore
     @OneToOne(mappedBy = "game", cascade = ALL)
     private Event event;
 
+    @Deprecated
     public String post() {
         return thread.replace("viewtopic.php?", "posting.php?mode=reply&f=20&");
     }
@@ -83,6 +88,7 @@ public class Game extends BaseModel<Game> {
         return title;
     }
 
+    @Deprecated
     @JsonIgnore
     public String getEscapedTitle() {
         String s = title.replaceAll("[^a-zA-Z0-9]", "_");
@@ -93,6 +99,7 @@ public class Game extends BaseModel<Game> {
         return s;
     }
 
+    @Deprecated
     @JsonIgnore
     public String getCoverType() {
         if (cover.endsWith("jpg") || cover.endsWith("jpeg")) {
@@ -104,6 +111,7 @@ public class Game extends BaseModel<Game> {
         return "image/gif";
     }
 
+    @Deprecated
     @JsonIgnore
     public Collection<Player> getPlayers() {
         Set<Player> players = new HashSet<Player>();
@@ -113,18 +121,22 @@ public class Game extends BaseModel<Game> {
         return players;
     }
 
+    @Deprecated
     public boolean hasShip() {
         return ships != null && !ships.isEmpty();
     }
 
+    @Deprecated
     public boolean hasDifficulties() {
         return difficulties != null && !difficulties.isEmpty();
     }
 
+    @Deprecated
     public boolean hasModes() {
         return modes != null && !modes.isEmpty();
     }
 
+    @Deprecated
     @JsonIgnore
     public int getOneCreditCount() {
         Collection<Score> oneCreditScores = allScores.stream().filter(Score::isOnecc).collect(Collectors.toList());
@@ -138,6 +150,7 @@ public class Game extends BaseModel<Game> {
         return uniqueOneCreditScores.size();
     }
 
+    @Deprecated
     public boolean hasTimerScores() {
         if (this.modes == null || this.modes.isEmpty()) {
             return false;
@@ -150,6 +163,7 @@ public class Game extends BaseModel<Game> {
         return false;
     }
 
+    @Deprecated
     @JsonIgnore
     public Collection<Score> getAllOneCCS() {
         MultiKeyMap map = new MultiKeyMap();
@@ -166,11 +180,82 @@ public class Game extends BaseModel<Game> {
         return scores;
     }
 
-    public boolean hasStages() {
-        return stages != null && !stages.isEmpty();
+    public Optional<Mode> getModeById(Long modeId) {
+        return this.modes.stream().filter(mode -> mode.id.equals(modeId)).findFirst();
     }
 
-    public boolean hasPlatforms() {
-        return platforms != null && !platforms.isEmpty();
+    public void add(Mode mode) {
+        this.modes.add(mode);
+    }
+
+    public void add(Difficulty difficulty) {
+        this.difficulties.add(difficulty);
+    }
+
+    public void add(Stage stage) {
+        this.stages.add(stage);
+    }
+
+    public void add(Ship ship) {
+        this.ships.add(ship);
+    }
+
+    public void add(Platform platform) {
+        this.platforms.add(platform);
+    }
+
+    @JsonIgnore
+    public Optional<Mode> getLastMode() {
+        if (this.hasModes()) {
+            return Optional.of(this.modes.get(this.modes.size() - 1));
+        }
+        return Optional.empty();
+    }
+
+    public void addNewMode(GameSetting gameSetting) {
+        Mode mode = Mode.builder()
+                .game(this)
+                .name(gameSetting.getValue())
+                .sortOrder(SortableSetting.getNextSortOrder(gameSetting, this.modes))
+                .build();
+        this.add(mode);
+        this.getModes().sort(comparing(Mode::getSortOrder));
+    }
+
+    public void addNewDifficulty(GameSetting gameSetting) {
+        Difficulty difficulty = Difficulty.builder()
+                .game(this)
+                .name(gameSetting.getValue())
+                .sortOrder(SortableSetting.getNextSortOrder(gameSetting, this.difficulties))
+                .build();
+        this.add(difficulty);
+        this.getDifficulties().sort(comparing(Difficulty::getSortOrder));
+    }
+
+    public void addNewShip(GameSetting gameSetting) {
+        Ship ship = Ship.builder()
+                .game(this)
+                .name(gameSetting.getValue())
+                .sortOrder(SortableSetting.getNextSortOrder(gameSetting, this.ships))
+                .build();
+        this.add(ship);
+        this.getShips().sort(comparing(Ship::getSortOrder));
+    }
+
+    public void addNewStage(GameSetting gameSetting) {
+        Stage stage = Stage.builder()
+                .game(this)
+                .name(gameSetting.getValue())
+                .sortOrder(SortableSetting.getNextSortOrder(gameSetting, this.stages))
+                .build();
+        this.add(stage);
+        this.getStages().sort(comparing(Stage::getSortOrder));
+    }
+
+    public void addNewPlatforms(String[] platforms) {
+        Arrays.stream(platforms)
+                .map(platform -> Platform.builder().name(platform).game(this).build())
+                .forEach(this::add);
+        this.getPlatforms().sort(comparing(Platform::getName));
     }
 }

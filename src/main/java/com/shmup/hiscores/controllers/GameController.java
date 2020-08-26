@@ -29,7 +29,7 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 @RestController
 public class GameController {
 
-    private GameService gameService;
+    private final GameService gameService;
 
     @Deprecated
     @RequestMapping("/ui/games/names")
@@ -70,6 +70,76 @@ public class GameController {
             return new ResponseEntity<>(gameService.createGame(gameForm), CREATED);
         }
         return new ResponseEntity<>(UNAUTHORIZED);
+    }
+
+    @PostMapping("/games/{id}/modes")
+    @ApiOperation(value = "create a new mode")
+    public ResponseEntity<Game> createMode(
+            @RequestAttribute(value = "player") Player player,
+            @PathVariable("id") Game game,
+            @ApiParam(value = "The mode to create", required = true) @Valid @RequestBody GameSetting gameSetting) {
+        if (!player.isAdministrator()) {
+            return new ResponseEntity<>(UNAUTHORIZED);
+        }
+        game.addNewMode(gameSetting);
+        gameService.save(game);
+        return new ResponseEntity<>(game, CREATED);
+    }
+
+    @PostMapping("/games/{id}/difficulties")
+    @ApiOperation(value = "create a new difficulty")
+    public ResponseEntity<Game> createDifficulty(
+            @RequestAttribute(value = "player") Player player,
+            @PathVariable("id") Game game,
+            @ApiParam(value = "The difficulty to create", required = true) @Valid @RequestBody GameSetting gameSetting) {
+        if (!player.isAdministrator()) {
+            return new ResponseEntity<>(UNAUTHORIZED);
+        }
+        game.addNewDifficulty(gameSetting);
+        gameService.save(game);
+        return new ResponseEntity<>(game, CREATED);
+    }
+
+    @PostMapping("/games/{id}/ships")
+    @ApiOperation(value = "create a new ship")
+    public ResponseEntity<Game> createShip(
+            @RequestAttribute(value = "player") Player player,
+            @PathVariable("id") Game game,
+            @ApiParam(value = "The ship to create", required = true) @Valid @RequestBody GameSetting gameSetting) {
+        if (!player.isAdministrator()) {
+            return new ResponseEntity<>(UNAUTHORIZED);
+        }
+        game.addNewShip(gameSetting);
+        gameService.save(game);
+        return new ResponseEntity<>(game, CREATED);
+    }
+
+    @PostMapping("/games/{id}/stages")
+    @ApiOperation(value = "create a new stage")
+    public ResponseEntity<Game> createStage(
+            @RequestAttribute(value = "player") Player player,
+            @PathVariable("id") Game game,
+            @ApiParam(value = "The stage to create", required = true) @Valid @RequestBody GameSetting gameSetting) {
+        if (!player.isAdministrator()) {
+            return new ResponseEntity<>(UNAUTHORIZED);
+        }
+        game.addNewStage(gameSetting);
+        gameService.save(game);
+        return new ResponseEntity<>(game, CREATED);
+    }
+
+    @PostMapping("/games/{id}/platforms")
+    @ApiOperation(value = "create a new platform")
+    public ResponseEntity<Game> createPlatform(
+            @RequestAttribute(value = "player") Player player,
+            @PathVariable("id") Game game,
+            @ApiParam(value = "The platforms to create", required = true) @RequestBody String[] platforms) {
+        if (!player.isAdministrator()) {
+            return new ResponseEntity<>(UNAUTHORIZED);
+        }
+        game.addNewPlatforms(platforms);
+        gameService.save(game);
+        return new ResponseEntity<>(game, CREATED);
     }
 
     @Deprecated

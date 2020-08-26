@@ -19,10 +19,10 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class GameService {
 
-    private GameRepository gameRepository;
-    private GameCustomRepository gameCustomRepository;
+    private final GameRepository gameRepository;
+    private final GameCustomRepository gameCustomRepository;
 
-    private ScoreRepository scoreRepository;
+    private final ScoreRepository scoreRepository;
 
     @Deprecated
     public List<Game> findAll() {
@@ -226,6 +226,10 @@ public class GameService {
                     platform.setName(platformName);
                     return platform;
                 }).collect(toList()));
-        return gameRepository.save(game);
+        return save(game);
+    }
+
+    public Game save(Game game) {
+        return this.gameRepository.save(game);
     }
 }
