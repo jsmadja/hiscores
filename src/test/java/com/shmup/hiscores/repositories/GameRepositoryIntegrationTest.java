@@ -5,6 +5,7 @@ import com.shmup.hiscores.models.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,9 @@ public class GameRepositoryIntegrationTest extends ContainerDatabaseTest {
 
     @Autowired
     private GameRepository gameRepository;
+
+    @Autowired
+    private ModeRepository modeRepository;
 
     @Test
     public void should_load_all_games() {
@@ -56,6 +60,7 @@ public class GameRepositoryIntegrationTest extends ContainerDatabaseTest {
         assertThat(savedGame.getDifficulties().get(0)).extracting("name", "sortOrder").contains("Easy", 1L);
     }
 
+    @Transactional
     @Test
     public void should_add_mode_to_game() {
         Game game = Game.builder()

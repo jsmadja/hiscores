@@ -13,6 +13,6 @@ public interface PlayerRepository extends CrudRepository<Player, Long> {
     Player findByName(String name);
 
     @Cacheable("players")
-    List<Player> findAll();
+    List<Player> findByOrderByNameAsc();
 
 }

@@ -18,8 +18,8 @@ import java.util.List;
 @AllArgsConstructor
 public class PlayerService {
 
-    private PlayerRepository playerRepository;
-    private PlayerCustomRepository playerCustomRepository;
+    private final PlayerRepository playerRepository;
+    private final PlayerCustomRepository playerCustomRepository;
 
     public Player findByShmupUserId(Long shmupUserId) {
         return playerRepository.findByShmupUserId(shmupUserId);
@@ -75,7 +75,7 @@ public class PlayerService {
     }
 
     public List<Player> findAll() {
-        return this.playerRepository.findAll();
+        return this.playerRepository.findByOrderByNameAsc();
     }
 
     public long getPlayersCount() {

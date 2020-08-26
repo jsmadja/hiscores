@@ -5,7 +5,6 @@ import com.shmup.hiscores.drawer.Images;
 import com.shmup.hiscores.drawer.RankingPicture;
 import com.shmup.hiscores.dto.*;
 import com.shmup.hiscores.models.Game;
-import com.shmup.hiscores.models.Platform;
 import com.shmup.hiscores.models.Player;
 import com.shmup.hiscores.services.GameService;
 import io.swagger.annotations.ApiOperation;
@@ -56,11 +55,7 @@ public class GameController {
         return new GameDTO(
                 game.getCover(),
                 game.getId(),
-                game.getTitle(),
-                game.getPlatforms().stream().map(Platform::getName).collect(toList()),
-                game.getPlayers().size(),
-                game.getScores().size(),
-                game.getOneccs().size());
+                game.getTitle());
     }
 
     @PostMapping("/games")

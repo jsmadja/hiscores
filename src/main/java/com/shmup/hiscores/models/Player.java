@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.*;
 
@@ -26,7 +25,7 @@ public class Player extends BaseModel<Player> {
     private boolean hideMedals;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "player")
     @Where(clause = "rank > 0")
     private List<Score> scores = new ArrayList<Score>();
 
@@ -50,6 +49,7 @@ public class Player extends BaseModel<Player> {
         updatedAt = new Date();
     }
 
+    @JsonIgnore
     @Deprecated
     public Optional<Score> getLastScore() {
         List<Score> scores = new ArrayList<Score>(this.scores);
