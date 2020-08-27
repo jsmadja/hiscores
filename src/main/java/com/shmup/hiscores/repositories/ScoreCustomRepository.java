@@ -38,7 +38,7 @@ public class ScoreCustomRepository {
                 .select(score)
                 .where(cb.isNotNull(score.get("rank")))
                 .orderBy(cb.desc(score.get("createdAt")));
-        return entityManager.createQuery(cq).setMaxResults(100).getResultList();
+        return entityManager.createQuery(cq).setMaxResults(14).getResultList();
     }
 
     public Optional<Score> getBestScoreFor(Player player, Game game, Mode mode, Difficulty difficulty) {
