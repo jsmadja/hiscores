@@ -1,6 +1,5 @@
 package com.shmup.hiscores.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shmup.hiscores.formatters.ScoreFormatter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,31 +21,24 @@ import java.util.Locale;
 @NoArgsConstructor
 public class Score extends BaseModel<Score> implements Comparable<Score> {
 
-    @JsonIgnore
     @ManyToOne
     private Game game;
 
-    @JsonIgnore
     @ManyToOne
     private Player player;
 
-    @JsonIgnore
     @ManyToOne
     private Stage stage;
 
-    @JsonIgnore
     @ManyToOne
     private Mode mode;
 
-    @JsonIgnore
     @ManyToOne
     private Difficulty difficulty;
 
-    @JsonIgnore
     @ManyToOne
     private Ship ship;
 
-    @JsonIgnore
     @ManyToOne
     private Platform platform;
 

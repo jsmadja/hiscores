@@ -8,13 +8,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import static java.util.Optional.*;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 @Deprecated
 @Repository
@@ -29,16 +29,16 @@ public class ScoreCustomRepository {
         Root<Score> score = cq.from(Score.class);
         score.fetch("game");
         score.fetch("stage");
-        score.fetch("ship");
         score.fetch("platform");
         score.fetch("player");
-        score.fetch("mode");
-        score.fetch("difficulty");
+        score.fetch("mode", JoinType.LEFT);
+        score.fetch("difficulty", JoinType.LEFT);
+        score.fetch("ship", JoinType.LEFT);
         cq
                 .select(score)
                 .where(cb.isNotNull(score.get("rank")))
                 .orderBy(cb.desc(score.get("createdAt")));
-        return entityManager.createQuery(cq).setMaxResults(10).getResultList();
+        return entityManager.createQuery(cq).setMaxResults(100).getResultList();
     }
 
     public Optional<Score> getBestScoreFor(Player player, Game game, Mode mode, Difficulty difficulty) {
