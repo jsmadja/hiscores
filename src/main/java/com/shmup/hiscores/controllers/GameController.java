@@ -1,6 +1,5 @@
 package com.shmup.hiscores.controllers;
 
-import com.google.common.collect.Lists;
 import com.shmup.hiscores.drawer.Images;
 import com.shmup.hiscores.drawer.RankingPicture;
 import com.shmup.hiscores.dto.*;
@@ -10,7 +9,6 @@ import com.shmup.hiscores.services.GameService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
-import org.javatuples.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,16 +27,6 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 public class GameController {
 
     private final GameService gameService;
-
-    @Deprecated
-    @RequestMapping("/ui/games/names")
-    public Iterable<Pair<Long, String>> allIdAndName() {
-        return Lists
-                .newArrayList(gameService.findAll())
-                .stream()
-                .map(game -> new Pair<>(game.getId(), game.getTitle()))
-                .collect(toList());
-    }
 
     @Deprecated
     @RequestMapping("/games")

@@ -39,6 +39,11 @@ public class PlayerController {
         return player;
     }
 
+    @RequestMapping("/me/games")
+    public List<Game> findGames(@RequestAttribute("player") Player player) {
+        return gameService.findByPlayer(player);
+    }
+
     @RequestMapping("/me/scores")
     public List<Score> findScores(@ApiIgnore @RequestAttribute("player") Player player) {
         return scoreService.getLastScoresOf(player);

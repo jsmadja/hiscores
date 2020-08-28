@@ -1,7 +1,6 @@
 package com.shmup.hiscores.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +18,6 @@ public abstract class BaseModel<T> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    @JsonIgnore
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createdAt;
 

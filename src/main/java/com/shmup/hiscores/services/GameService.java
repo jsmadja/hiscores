@@ -232,4 +232,8 @@ public class GameService {
     public Game save(Game game) {
         return this.gameRepository.save(game);
     }
+
+    public List<Game> findByPlayer(Player player) {
+        return this.gameRepository.findByPlayer(player);
+    }
 }
