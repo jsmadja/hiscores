@@ -45,11 +45,10 @@ public class ScoreCustomRepository {
         }
         Predicate clause = cb.and(wherePred.toArray(new Predicate[0]));
         cq
-                .multiselect(score)
+                .select(score)
                 .where(clause)
                 .orderBy(cb.desc(score.get("createdAt")));
-        List<Score> resultList = entityManager.createQuery(cq).setMaxResults(6).getResultList();
-        return resultList;
+        return entityManager.createQuery(cq).setMaxResults(6).getResultList();
     }
 
     public Optional<Score> getBestScoreFor(Player player, Game game, Mode mode, Difficulty difficulty) {
