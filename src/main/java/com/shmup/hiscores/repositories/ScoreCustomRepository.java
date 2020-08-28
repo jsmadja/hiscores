@@ -6,10 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,21 +22,34 @@ public class ScoreCustomRepository {
     private EntityManager entityManager;
 
     public List<Score> getLastScores() {
+        return this.getLastScoresOf(null);
+    }
+
+
+    public List<Score> getLastScoresOf(Player player) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Score> cq = cb.createQuery(Score.class);
         Root<Score> score = cq.from(Score.class);
-        score.fetch("game");
-        score.fetch("stage");
-        score.fetch("platform");
-        score.fetch("player");
-        score.fetch("mode", JoinType.LEFT);
-        score.fetch("difficulty", JoinType.LEFT);
-        score.fetch("ship", JoinType.LEFT);
+        score.join("game");
+        score.join("player");
+        score.join("platform");
+        score.join("stage", JoinType.LEFT);
+        score.join("mode", JoinType.LEFT);
+        score.join("difficulty", JoinType.LEFT);
+        score.join("ship", JoinType.LEFT);
+
+        List<Predicate> wherePred = new ArrayList<>();
+        wherePred.add(cb.isNotNull(score.get("rank")));
+        if (player != null) {
+            wherePred.add(cb.equal(score.get("player"), player));
+        }
+        Predicate clause = cb.and(wherePred.toArray(new Predicate[0]));
         cq
-                .select(score)
-                .where(cb.isNotNull(score.get("rank")))
+                .multiselect(score)
+                .where(clause)
                 .orderBy(cb.desc(score.get("createdAt")));
-        return entityManager.createQuery(cq).setMaxResults(14).getResultList();
+        List<Score> resultList = entityManager.createQuery(cq).setMaxResults(6).getResultList();
+        return resultList;
     }
 
     public Optional<Score> getBestScoreFor(Player player, Game game, Mode mode, Difficulty difficulty) {
@@ -58,4 +69,5 @@ public class ScoreCustomRepository {
         List<Score> scores = scoreTypedQuery.getResultList();
         return scores.isEmpty() ? empty() : of(scores.get(0));
     }
+
 }

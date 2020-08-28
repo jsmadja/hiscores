@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -24,18 +25,23 @@ import static org.apache.commons.lang3.StringUtils.*;
 @RestController
 public class PlayerController {
 
-    private ModeService modeService;
-    private ShipService shipService;
-    private PlayerService playerService;
-    private ScoreService scoreService;
-    private GameService gameService;
-    private PlatformService platformService;
-    private StageService stageService;
-    private DifficultyService difficultyService;
+    private final ModeService modeService;
+    private final ShipService shipService;
+    private final PlayerService playerService;
+    private final ScoreService scoreService;
+    private final GameService gameService;
+    private final PlatformService platformService;
+    private final StageService stageService;
+    private final DifficultyService difficultyService;
 
     @RequestMapping("/me")
     public Player me(@RequestAttribute("player") Player player) {
         return player;
+    }
+
+    @RequestMapping("/me/scores")
+    public List<Score> findScores(@ApiIgnore @RequestAttribute("player") Player player) {
+        return scoreService.getLastScoresOf(player);
     }
 
     @RequestMapping(value = "/me/scores", method = RequestMethod.POST)

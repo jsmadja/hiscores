@@ -14,8 +14,8 @@ import java.util.Optional;
 @Service
 public class ScoreService {
 
-    private ScoreCustomRepository scoreCustomRepository;
-    private ScoreRepository scoreRepository;
+    private final ScoreCustomRepository scoreCustomRepository;
+    private final ScoreRepository scoreRepository;
 
     public List<Score> getLastScores() {
         return scoreCustomRepository.getLastScores();
@@ -39,5 +39,9 @@ public class ScoreService {
 
     public long getScoresCount() {
         return scoreRepository.count();
+    }
+
+    public List<Score> getLastScoresOf(Player player) {
+        return scoreCustomRepository.getLastScoresOf(player);
     }
 }
