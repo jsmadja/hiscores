@@ -2,7 +2,6 @@ package com.shmup.hiscores.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
 
@@ -10,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.*;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @NoArgsConstructor

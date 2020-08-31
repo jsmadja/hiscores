@@ -49,6 +49,58 @@ public class PlayerController {
         return scoreService.getLastScoresOf(player);
     }
 
+    @RequestMapping(value = "/me/scores/{id}", method = RequestMethod.POST)
+    public Score edit(@ApiIgnore @RequestAttribute("player") Player player,
+                      @PathVariable("id") Score score,
+                      @RequestParam(required = false) MultipartFile photo,
+                      @RequestParam(required = false) MultipartFile inp,
+                      @RequestParam(required = false) String value,
+                      @RequestParam Platform platform,
+                      @RequestParam(required = false) Stage stage,
+                      @RequestParam(required = false) Mode mode,
+                      @RequestParam(required = false) Ship ship,
+                      @RequestParam(required = false) Difficulty difficulty,
+                      @RequestParam(required = false) String comment,
+                      @RequestParam(required = false) String replay,
+                      @RequestParam(required = false) Integer minutes,
+                      @RequestParam(required = false) Integer seconds,
+                      @RequestParam(required = false) Integer milliseconds) throws IOException {
+        Logger.getAnonymousLogger().info("Mise a jour du score envoyé par " + player.getName());
+        if (!score.isPlayedBy(player)) {
+            throw new RuntimeException("Unauthorized");
+        }
+        score.setStage(stage);
+        score.setMode(mode);
+        score.setDifficulty(difficulty);
+        score.setShip(ship);
+        score.setComment(comment);
+        score.setPlatform(platform);
+        score.setValue(toScoreValue(value, minutes, seconds, milliseconds));
+        if (photo != null) {
+            storePhoto(score, photo);
+        }
+        if (inp != null) {
+            storeInp(score, inp);
+        }
+        score.setReplay(replay);
+        if (score.getValue() == null) {
+            throw new RuntimeException("Invalid score value");
+        }
+        Optional<Score> bestScore = scoreService.getBestScoreFor(player, score.getGame(), score.getMode(), score.getDifficulty());
+        Integer oldRank = null;
+        if (bestScore.isPresent()) {
+            oldRank = bestScore.get().getRank();
+        }
+        scoreService.update(score);
+        gameService.recomputeRanking(score.getGame(), score);
+        score = scoreService.refresh(score);
+        if (oldRank != null && score.getRank() != null) {
+            score.setProgression(oldRank - score.getRank());
+            scoreService.update(score);
+        }
+        return score;
+    }
+
     @RequestMapping(value = "/me/scores", method = RequestMethod.POST)
     public Score submit(
             @ApiIgnore @RequestAttribute("player") Player player,
@@ -162,6 +214,10 @@ public class PlayerController {
         Integer minutes = data.getMinutes();
         Integer seconds = data.getSeconds();
         Integer milliseconds = data.getMilliseconds();
+        return toScoreValue(scoreValue, minutes, seconds, milliseconds);
+    }
+
+    public BigDecimal toScoreValue(String scoreValue, Integer minutes, Integer seconds, Integer milliseconds) {
         if (isBlank(scoreValue) && minutes == null && seconds == null && milliseconds == null) {
             return null;
         }

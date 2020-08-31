@@ -238,4 +238,8 @@ public class Score extends BaseModel<Score> implements Comparable<Score> {
     public String getStageName() {
         return this.stage == null ? "" : this.stage.getName();
     }
+
+    public boolean isPlayedBy(Player player) {
+        return this.player.id.equals(player.id);
+    }
 }

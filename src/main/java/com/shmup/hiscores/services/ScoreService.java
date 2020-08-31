@@ -44,4 +44,8 @@ public class ScoreService {
     public List<Score> getLastScoresOf(Player player) {
         return scoreCustomRepository.getLastScoresOf(player);
     }
+
+    public Score findById(Long id) {
+        return scoreRepository.findById(id).get();
+    }
 }
