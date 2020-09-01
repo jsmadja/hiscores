@@ -91,6 +91,7 @@ public class GameRepositoryIntegrationTest extends ContainerDatabaseTest {
         assertThat(updatedGame.getDifficulties().get(0)).extracting("name", "sortOrder").contains("Easy", 1L);
     }
 
+    @Transactional
     @Test
     public void should_add_stage_to_game() {
         Game game = Game.builder()
@@ -106,6 +107,7 @@ public class GameRepositoryIntegrationTest extends ContainerDatabaseTest {
         assertThat(updatedGame.getStages().get(0)).extracting("name", "sortOrder").contains("1", 1L);
     }
 
+    @Transactional
     @Test
     public void should_add_ship_to_game() {
         Game game = Game.builder()
@@ -121,6 +123,7 @@ public class GameRepositoryIntegrationTest extends ContainerDatabaseTest {
         assertThat(updatedGame.getShips().get(0)).extracting("name", "sortOrder").contains("Type A", 1L);
     }
 
+    @Transactional
     @Test
     public void should_add_platform_to_game() {
         Game game = Game.builder()

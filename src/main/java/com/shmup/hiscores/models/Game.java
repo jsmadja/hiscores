@@ -4,17 +4,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shmup.hiscores.dto.GameSetting;
 import lombok.*;
 import org.apache.commons.collections.map.MultiKeyMap;
-import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
-import static javax.persistence.CascadeType.*;
-import static javax.persistence.FetchType.EAGER;
-import static org.hibernate.annotations.FetchMode.SUBSELECT;
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
 
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "game")
@@ -45,38 +46,28 @@ public class Game extends BaseModel<Game> {
 
     @JsonIgnore
     @OneToMany(mappedBy = "game")
-    @Fetch(SUBSELECT)
     @Where(clause = "onecc = true")
     private List<Score> oneccs;
 
     @OrderBy("name")
-    @OneToMany(mappedBy = "game", cascade = {PERSIST, MERGE}, fetch = EAGER)
-    @Fetch(SUBSELECT)
+    @OneToMany(mappedBy = "game", cascade = {PERSIST, MERGE})
     private List<Platform> platforms;
 
     @OrderBy("sortOrder")
-    @OneToMany(mappedBy = "game", cascade = {PERSIST, MERGE}, fetch = EAGER)
-    @Fetch(SUBSELECT)
+    @OneToMany(mappedBy = "game", cascade = {PERSIST, MERGE})
     private List<Difficulty> difficulties;
 
     @OrderBy("sortOrder")
-    @OneToMany(mappedBy = "game", cascade = {PERSIST, MERGE}, fetch = EAGER)
-    @Fetch(SUBSELECT)
+    @OneToMany(mappedBy = "game", cascade = {PERSIST, MERGE})
     private List<Mode> modes;
 
     @OrderBy("sortOrder")
-    @OneToMany(mappedBy = "game", cascade = {PERSIST, MERGE}, fetch = EAGER)
-    @Fetch(SUBSELECT)
+    @OneToMany(mappedBy = "game", cascade = {PERSIST, MERGE})
     private List<Ship> ships;
 
     @OrderBy("sortOrder")
-    @OneToMany(mappedBy = "game", cascade = {PERSIST, MERGE}, fetch = EAGER)
-    @Fetch(SUBSELECT)
+    @OneToMany(mappedBy = "game", cascade = {PERSIST, MERGE})
     private List<Stage> stages;
-
-    @JsonIgnore
-    @OneToOne(mappedBy = "game", cascade = ALL)
-    private Event event;
 
     @Deprecated
     public String post() {
