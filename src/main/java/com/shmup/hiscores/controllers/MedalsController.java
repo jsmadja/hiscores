@@ -15,9 +15,9 @@ import java.io.IOException;
 @RestController
 public class MedalsController {
 
-    private PlayerService playerService;
+    private final PlayerService playerService;
 
-    @GetMapping("/medals/{shmupUserId}")
+    @GetMapping("/player/{shmupUserId}/medals.png")
     public void medals(@PathVariable Long shmupUserId, HttpServletResponse response) throws IOException {
         response.setContentType("image/png");
         Player player = playerService.findByShmupUserId(shmupUserId);

@@ -199,14 +199,14 @@ public class PlayerController {
         String filename = filePart.getOriginalFilename().replaceAll("[^a-zA-Z0-9.]+", "");
         String pathname = "/photos/" + new Date().getTime() + "-" + filename;
         Files.copy(filePart.getInputStream(), new File(pathname).toPath());
-        score.setPhoto("http://hiscores.shmup.com" + pathname);
+        score.setPhoto("https://hiscores.shmup.com" + pathname);
     }
 
     private void storeInp(Score score, MultipartFile filePart) throws IOException {
         String filename = filePart.getOriginalFilename().replaceAll("[^a-zA-Z0-9.]+", "");
         String pathname = "/inp/" + new Date().getTime() + "-" + filename;
         Files.copy(filePart.getInputStream(), new File(pathname).toPath());
-        score.setInp("http://hiscores.shmup.com" + pathname);
+        score.setInp("https://hiscores.shmup.com" + pathname);
     }
 
     public BigDecimal value(ScoreForm data) {
