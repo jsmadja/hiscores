@@ -1,9 +1,7 @@
 package com.shmup.hiscores.services;
 
 import com.shmup.hiscores.drawer.MedalsPicture;
-import com.shmup.hiscores.models.Player;
-import com.shmup.hiscores.models.Score;
-import com.shmup.hiscores.models.Versus;
+import com.shmup.hiscores.models.*;
 import com.shmup.hiscores.repositories.PlayerCustomRepository;
 import com.shmup.hiscores.repositories.PlayerRepository;
 import lombok.AllArgsConstructor;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Deprecated
@@ -20,6 +19,10 @@ public class PlayerService {
 
     private final PlayerRepository playerRepository;
     private final PlayerCustomRepository playerCustomRepository;
+    private final ModeService modeService;
+    private final DifficultyService difficultyService;
+    private final GameService gameService;
+    private final ScoreService scoreService;
 
     public Player findByShmupUserId(Long shmupUserId) {
         return playerRepository.findByShmupUserId(shmupUserId);
@@ -78,7 +81,26 @@ public class PlayerService {
         return this.playerRepository.findByOrderByNameAsc();
     }
 
-    public long getPlayersCount() {
-        return this.playerRepository.count();
+    public Recommendations getRecommendationsFor(Player player) {
+
+        List<Mode> unplayedModes = modeService.getUnplayedModesBy(player);
+        Collections.shuffle(unplayedModes);
+        Mode unplayedMode = unplayedModes.stream().findFirst().orElse(null);
+
+        List<Difficulty> unplayedDifficulties = difficultyService.getUnplayedDifficultiesBy(player);
+        Collections.shuffle(unplayedDifficulties);
+        Difficulty unplayedDifficulty = unplayedDifficulties.stream().findFirst().orElse(null);
+
+        List<Game> unplayedGames = gameService.getUnplayedGames(player);
+        Collections.shuffle(unplayedGames);
+        Game unplayedGame = unplayedGames.stream().findFirst().orElse(null);
+
+        Score oldestScore = scoreService.findOldestScoreOf(player);
+        Score latestScore = scoreService.findLatestScoreOf(player);
+
+        Score nearestScore = scoreService.findNearestScoreOf(player);
+        Score farestScore = scoreService.findFarestScoreOf(player);
+
+        return new Recommendations(new Recommendation(unplayedMode), new Recommendation(unplayedDifficulty), new Recommendation(unplayedGame), new Recommendation(oldestScore.getGame()), new Recommendation(latestScore.getGame()), new Recommendation(nearestScore.getGame()), new Recommendation(farestScore.getGame()));
     }
 }

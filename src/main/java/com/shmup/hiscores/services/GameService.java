@@ -236,4 +236,8 @@ public class GameService {
     public List<Game> findByPlayer(Player player) {
         return this.gameRepository.findByPlayer(player);
     }
+
+    public List<Game> getUnplayedGames(Player player) {
+        return this.gameRepository.findByPlayerNot(player.getId());
+    }
 }

@@ -39,6 +39,11 @@ public class PlayerController {
         return player;
     }
 
+    @RequestMapping("/me/recommendations")
+    public Recommendations getRecommendations(@RequestAttribute("player") Player player) {
+        return playerService.getRecommendationsFor(player);
+    }
+
     @RequestMapping("/me/games")
     public List<Game> findGames(@RequestAttribute("player") Player player) {
         return gameService.findByPlayer(player);

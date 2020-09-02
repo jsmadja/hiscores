@@ -69,4 +69,20 @@ public class ScoreCustomRepository {
         return scores.isEmpty() ? empty() : of(scores.get(0));
     }
 
+
+    public Optional<Score> getPreviousScore(Score score) {
+        String query = "SELECT score.* " +
+                "        FROM score " +
+                "JOIN game ON game.id = score.game_id " +
+                "JOIN player ON player.id = score.player_id " +
+                "LEFT JOIN platform ON platform.id = score.platform_id " +
+                "LEFT JOIN mode ON mode.id = score.mode_id " +
+                "LEFT JOIN difficulty ON difficulty.id = score.difficulty_id " +
+                "        WHERE rank = " + (score.getRank() - 1) +
+                " AND score.game_id = " + score.getGame().getId() +
+                " AND mode_id " + (score.getMode() != null ? "= " + score.getMode().getId() : "IS NULL") +
+                " AND difficulty_id " + (score.getDifficulty() != null ? " = " + score.getDifficulty().getId() : "IS NULL");
+        return entityManager.createNativeQuery(query, Score.class).getResultList().stream().findFirst();
+    }
+
 }
