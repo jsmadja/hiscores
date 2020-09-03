@@ -10,6 +10,9 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.*;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+
 @Deprecated
 @AllArgsConstructor
 @Service
@@ -97,5 +100,13 @@ public class ScoreService {
                     BigDecimal ratio2 = s2.getValue().divide(previousS2.getValue(), MathContext.DECIMAL128).subtract(BigDecimal.ONE);
                     return ratio2.compareTo(ratio1);
                 }).orElse(null);
+    }
+
+    public List<KillListItem> getKillListOf(Player player) {
+        return scoreRepository.findByPlayerAndRankIsNotNull(player)
+                .stream()
+                .map((Score score) -> new KillListItem(score, scoreCustomRepository.getPreviousScore(score)))
+                .sorted(comparing(KillListItem::getRatio))
+                .collect(toList());
     }
 }

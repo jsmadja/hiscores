@@ -103,4 +103,8 @@ public class PlayerService {
 
         return new Recommendations(new Recommendation(unplayedMode), new Recommendation(unplayedDifficulty), new Recommendation(unplayedGame), new Recommendation(oldestScore.getGame()), new Recommendation(latestScore.getGame()), new Recommendation(nearestScore.getGame()), new Recommendation(farestScore.getGame()));
     }
+
+    public List<KillListItem> getKillListFor(Player player) {
+        return scoreService.getKillListOf(player);
+    }
 }

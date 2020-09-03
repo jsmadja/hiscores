@@ -48,7 +48,7 @@ public class Versus {
             this.score2 = score2;
         }
 
-        public int scoreGap() {
+        public int getScoreGap() {
             Score scoreA, scoreB;
             if (score1.isTimeScore()) {
                 scoreA = score2;

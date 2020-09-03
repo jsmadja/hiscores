@@ -44,6 +44,11 @@ public class PlayerController {
         return playerService.getRecommendationsFor(player);
     }
 
+    @RequestMapping("/me/kill-list")
+    public List<KillListItem> getKillList(@RequestAttribute("player") Player player) {
+        return playerService.getKillListFor(player);
+    }
+
     @RequestMapping("/me/games")
     public List<Game> findGames(@RequestAttribute("player") Player player) {
         return gameService.findByPlayer(player);
