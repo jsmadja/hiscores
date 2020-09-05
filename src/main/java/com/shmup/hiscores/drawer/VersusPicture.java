@@ -22,11 +22,11 @@ public class VersusPicture {
         FontMetrics fontMetrics = graphics.getFontMetrics();
         graphics.setColor(COLOR_SHMUP_TEXT);
         graphics.setFont(gameFont);
-        graphics.drawString(message(player, versus), 0, fontMetrics.getAscent());
+        graphics.drawString(message(versus), 0, fontMetrics.getAscent());
         return bi;
     }
 
-    private static String message(Player player, Versus versus) {
+    private static String message(Versus versus) {
         return MessageFormat.format("Adversaire privilégié : {0} (ratio: {1}/{2})", versus.player2.getName(), versus.winCount(), versus.loseCount());
     }
 }

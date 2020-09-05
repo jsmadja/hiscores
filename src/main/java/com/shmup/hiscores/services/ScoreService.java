@@ -41,10 +41,6 @@ public class ScoreService {
         scoreRepository.save(score);
     }
 
-    public long getScoresCount() {
-        return scoreRepository.count();
-    }
-
     public List<Score> getLastScoresOf(Player player) {
         return scoreCustomRepository.getLastScoresOf(player);
     }

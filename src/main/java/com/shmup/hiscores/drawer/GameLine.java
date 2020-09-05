@@ -1,9 +1,9 @@
 package com.shmup.hiscores.drawer;
 
+import com.shmup.hiscores.Messages;
 import com.shmup.hiscores.models.Difficulty;
 import com.shmup.hiscores.models.Mode;
 import com.shmup.hiscores.models.Ranking;
-import com.shmup.hiscores.Messages;
 
 import java.awt.*;
 
@@ -38,13 +38,13 @@ public class GameLine implements PictureLine {
             title += Messages.get("GeneralRanking");
         }
         if (mode != null) {
-            title = mode.toString();
+            title = mode.getName();
             if (difficulty != null) {
-                title += " : " + difficulty.toString();
+                title += " : " + difficulty.getName();
             }
         } else {
             if (difficulty != null) {
-                title = difficulty.toString();
+                title = difficulty.getName();
             }
         }
         graphics.drawString(title, 30, y);

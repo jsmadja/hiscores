@@ -195,14 +195,6 @@ public class Game extends BaseModel<Game> {
         this.platforms.add(platform);
     }
 
-    @JsonIgnore
-    public Optional<Mode> getLastMode() {
-        if (this.hasModes()) {
-            return Optional.of(this.modes.get(this.modes.size() - 1));
-        }
-        return Optional.empty();
-    }
-
     public void addNewMode(GameSetting gameSetting) {
         Mode mode = Mode.builder()
                 .game(this)

@@ -43,8 +43,8 @@ public class PlayerService {
         playerRepository.save(player);
     }
 
-    public Versus getBestVersus(Player player) {
-        List<Player> all = playerCustomRepository.findAllJoinScores();
+    public Versus getBestVersusFor(Player player) {
+        List<Player> all = findAll();
         all.remove(player);
         Versus bestVersus = null;
         for (Player opponent : all) {
@@ -108,16 +108,4 @@ public class PlayerService {
         return scoreService.getKillListOf(player);
     }
 
-    public Versus getBestVersusFor(Player player) {
-        List<Player> all = findAll();
-        all.remove(player);
-        Versus bestVersus = null;
-        for (Player opponent : all) {
-            Versus versus = player.getComparisonWith(opponent);
-            if (bestVersus == null || bestVersus.loseCount() < versus.loseCount()) {
-                bestVersus = versus;
-            }
-        }
-        return bestVersus;
-    }
 }
