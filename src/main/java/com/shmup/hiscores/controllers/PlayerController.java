@@ -33,6 +33,7 @@ public class PlayerController {
     private final PlatformService platformService;
     private final StageService stageService;
     private final DifficultyService difficultyService;
+    private final CacheService cacheService;
 
     @RequestMapping("/me")
     public Player me(@RequestAttribute("player") Player player) {
@@ -102,6 +103,9 @@ public class PlayerController {
             oldRank = bestScore.get().getRank();
         }
         scoreService.update(score);
+        cacheService.removeRankingPictureOf(score.getGame());
+        cacheService.removeSignaturePictureOf(score.getPlayer());
+        cacheService.removeMedalsPictureOf(score.getPlayer().getShmupUserId());
         gameService.recomputeRanking(score.getGame(), score);
         score = scoreService.refresh(score);
         if (oldRank != null && score.getRank() != null) {
@@ -152,6 +156,9 @@ public class PlayerController {
             oldRank = bestScore.get().getRank();
         }
         scoreService.save(score);
+        cacheService.removeRankingPictureOf(score.getGame());
+        cacheService.removeSignaturePictureOf(score.getPlayer());
+        cacheService.removeMedalsPictureOf(score.getPlayer().getShmupUserId());
         gameService.recomputeRanking(score.getGame(), score);
         score = scoreService.refresh(score);
 

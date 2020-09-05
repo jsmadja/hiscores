@@ -5,6 +5,7 @@ import com.shmup.hiscores.drawer.RankingPicture;
 import com.shmup.hiscores.dto.*;
 import com.shmup.hiscores.models.Game;
 import com.shmup.hiscores.models.Player;
+import com.shmup.hiscores.services.CacheService;
 import com.shmup.hiscores.services.GameService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -27,6 +29,8 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 public class GameController {
 
     private final GameService gameService;
+
+    private final CacheService cacheService;
 
     @Deprecated
     @RequestMapping("/games")
@@ -169,13 +173,16 @@ public class GameController {
 
     @Deprecated
     @RequestMapping("/game/{id}/ranking.png")
-    public void getRankingPicture(@PathVariable("id") Long id, HttpServletResponse response) throws IOException {
-        Game game = gameService.findById(id);
-        BufferedImage image = RankingPicture.createRankingPicture(game, gameService.getRankingsOf(game));
-        byte[] bytes = Images.toBytes(image);
+    public void getRankingPicture(@PathVariable("id") Game game, HttpServletResponse response) throws IOException {
+        Optional<byte[]> rankingPicture = cacheService.getRankingPictureOf(game);
+        if (rankingPicture.isEmpty()) {
+            BufferedImage image = RankingPicture.createRankingPicture(game, gameService.getRankingsOf(game));
+            byte[] bytes = Images.toBytes(image);
+            cacheService.setRankingPictureOf(game, bytes);
+            rankingPicture = Optional.of(bytes);
+        }
         response.setContentType("image/png");
         response.setStatus(200);
-        response.getOutputStream().write(bytes);
+        response.getOutputStream().write(rankingPicture.get());
     }
-
 }

@@ -6,6 +6,7 @@ import com.shmup.hiscores.drawer.VersusPicture;
 import com.shmup.hiscores.models.Player;
 import com.shmup.hiscores.models.Score;
 import com.shmup.hiscores.models.Versus;
+import com.shmup.hiscores.services.CacheService;
 import com.shmup.hiscores.services.PlayerService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -26,6 +28,8 @@ import static java.util.stream.Collectors.toList;
 public class PlayersController {
 
     private final PlayerService playerService;
+
+    private final CacheService cacheService;
 
     @Data
     @AllArgsConstructor
@@ -55,20 +59,30 @@ public class PlayersController {
 
     @RequestMapping("/player/{player}/signature.png")
     public void getSignature(@PathVariable("player") Player player, HttpServletResponse response) throws IOException {
+        Optional<byte[]> signaturePicture = cacheService.getSignaturePictureOf(player);
+        if (signaturePicture.isEmpty()) {
+            BufferedImage image = SignaturePicture.createSignaturePicture(player);
+            byte[] bytes = Images.toBytes(image);
+            cacheService.setSignaturePictureOf(player, bytes);
+            signaturePicture = Optional.of(bytes);
+        }
         response.setContentType("image/png");
-        BufferedImage image = SignaturePicture.createSignaturePicture(player);
-        byte[] bytes = Images.toBytes(image);
         response.setStatus(200);
-        response.getOutputStream().write(bytes);
+        response.getOutputStream().write(signaturePicture.get());
     }
 
     @RequestMapping("/player/{player}/versus.png")
     public void getVersusPicture(@PathVariable("player") Player player, HttpServletResponse response) throws IOException {
+        Optional<byte[]> versusPicture = cacheService.getVersusPictureOf(player);
+        if (versusPicture.isEmpty()) {
+            BufferedImage image = VersusPicture.createVersusPicture(player, playerService.getBestVersusFor(player));
+            byte[] bytes = Images.toBytes(image);
+            cacheService.setVersusPictureOf(player, bytes);
+            versusPicture = Optional.of(bytes);
+        }
         response.setContentType("image/png");
-        BufferedImage image = VersusPicture.createVersusPicture(player, playerService.getBestVersusFor(player));
-        byte[] bytes = Images.toBytes(image);
         response.setStatus(200);
-        response.getOutputStream().write(bytes);
+        response.getOutputStream().write(versusPicture.get());
     }
 
 }
