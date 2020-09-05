@@ -4,6 +4,7 @@ import com.shmup.hiscores.dto.PlatformWithGameCount;
 import com.shmup.hiscores.models.Game;
 import com.shmup.hiscores.services.PlatformService;
 import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,9 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 public class PlatformsController {
 
-    private PlatformService platformService;
+    private final PlatformService platformService;
 
     @GetMapping("/platforms")
     @ApiOperation(value = "Get all platforms")
