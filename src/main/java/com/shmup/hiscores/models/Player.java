@@ -110,4 +110,5 @@ public class Player extends BaseModel<Player> {
     public boolean isSuperAdministrator() {
         return id == 1;
     }
+
 }

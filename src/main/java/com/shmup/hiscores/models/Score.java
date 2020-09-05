@@ -10,6 +10,7 @@ import org.ocpsoft.prettytime.PrettyTime;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.util.Locale;
 
@@ -62,6 +63,9 @@ public class Score extends BaseModel<Score> implements Comparable<Score> {
     public boolean isVip() {
         return player.isVip();
     }
+
+    @Transient
+    private Long gapWithPreviousScore;
 
     public Score(Game game, Player player, Stage stage, Ship ship, Mode mode, Difficulty difficulty, String comment, Platform platform, BigDecimal value, String replay) {
         this.game = game;

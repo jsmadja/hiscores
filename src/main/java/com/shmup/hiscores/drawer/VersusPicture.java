@@ -27,6 +27,6 @@ public class VersusPicture {
     }
 
     private static String message(Player player, Versus versus) {
-        return MessageFormat.format("Adversaire privilégié : %s (ratio: %d/%d)", versus.player2.getName(), versus.winCount(), versus.loseCount());
+        return MessageFormat.format("Adversaire privilégié : {0} (ratio: {1}/{2})", versus.player2.getName(), versus.winCount(), versus.loseCount());
     }
 }

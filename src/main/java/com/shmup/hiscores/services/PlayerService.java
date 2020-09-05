@@ -107,4 +107,17 @@ public class PlayerService {
     public List<KillListItem> getKillListFor(Player player) {
         return scoreService.getKillListOf(player);
     }
+
+    public Versus getBestVersusFor(Player player) {
+        List<Player> all = findAll();
+        all.remove(player);
+        Versus bestVersus = null;
+        for (Player opponent : all) {
+            Versus versus = player.getComparisonWith(opponent);
+            if (bestVersus == null || bestVersus.loseCount() < versus.loseCount()) {
+                bestVersus = versus;
+            }
+        }
+        return bestVersus;
+    }
 }
