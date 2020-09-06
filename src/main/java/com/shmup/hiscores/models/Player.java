@@ -84,7 +84,7 @@ public class Player extends BaseModel<Player> {
     }
 
     public boolean isAuthenticated() {
-        return !this.equals(guest);
+        return !this.getId().equals(0L);
     }
 
     public boolean isAdministrator() {

@@ -20,6 +20,6 @@ public class ModeService {
     }
 
     public List<Mode> getUnplayedModesBy(Player player) {
-        return modeRepository.findByPlayerNot(player.getId());
+        return modeRepository.findUnplayedModesByPlayer(player.getId());
     }
 }

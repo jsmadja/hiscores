@@ -20,6 +20,6 @@ public class DifficultyService {
     }
 
     public List<Difficulty> getUnplayedDifficultiesBy(Player player) {
-        return difficultyRepository.findByPlayerNot(player.getId());
+        return difficultyRepository.findUnplayedDifficultiesByPlayer(player.getId());
     }
 }
