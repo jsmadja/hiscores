@@ -1,6 +1,5 @@
 package com.shmup.hiscores.drawer;
 
-import com.shmup.hiscores.Messages;
 import com.shmup.hiscores.models.Difficulty;
 import com.shmup.hiscores.models.Mode;
 import com.shmup.hiscores.models.Ranking;
@@ -35,7 +34,7 @@ public class GameLine implements PictureLine {
         graphics.setFont(gameFont);
         String title = "";
         if (ranking.isGeneral()) {
-            title += Messages.get("GeneralRanking");
+            title += "General Ranking";
         }
         if (mode != null) {
             title = mode.getName();
