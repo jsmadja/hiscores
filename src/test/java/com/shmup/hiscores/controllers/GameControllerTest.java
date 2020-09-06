@@ -1,8 +1,10 @@
 package com.shmup.hiscores.controllers;
 
 import com.shmup.hiscores.dto.GameSetting;
+import com.shmup.hiscores.dto.RankingDTO;
 import com.shmup.hiscores.models.Game;
 import com.shmup.hiscores.models.Player;
+import com.shmup.hiscores.models.Ranking;
 import com.shmup.hiscores.services.GameService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -93,5 +96,24 @@ class GameControllerTest {
         verify(gameService).save(game);
         assertThat(response.getStatusCode()).isEqualTo(CREATED);
         assertThat(response.getBody()).isEqualTo(game);
+    }
+
+    @Test
+    public void should_get_game_from_db() {
+        Game dbGame = mock(Game.class);
+        when(gameService.findById(1L)).thenReturn(dbGame);
+
+        Game game = gameController.getById(1L);
+
+        assertThat(game).isEqualTo(dbGame);
+    }
+
+    @Test
+    public void should_get_rankings() {
+        Game game = Game.builder().build();
+        List<Ranking> rankings = new ArrayList<>();
+        when(gameService.getRankingsOf(game)).thenReturn(rankings);
+        List<RankingDTO> rankingsDTO = gameController.getRankingsById(game);
+        assertThat(rankingsDTO).isEmpty();
     }
 }

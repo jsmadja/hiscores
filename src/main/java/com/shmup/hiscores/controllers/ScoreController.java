@@ -6,8 +6,8 @@ import com.shmup.hiscores.models.Player;
 import com.shmup.hiscores.models.Score;
 import com.shmup.hiscores.services.ScoreService;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
@@ -22,18 +22,18 @@ public class ScoreController {
 
     private final ScoreService scoreService;
 
-    @RequestMapping("/scores")
+    @GetMapping("/scores")
     public List<Score> findScores() {
         return scoreService.getLastScores();
     }
 
     @Deprecated
-    @RequestMapping("/scores/{id}")
+    @GetMapping("/scores/{id}")
     public Score getById(@PathVariable("id") Long id) {
         return scoreService.findById(id);
     }
 
-    @RequestMapping("/scores/{id}/history")
+    @GetMapping("/scores/{id}/history")
     public List<Score> getHistory(@PathVariable("id") Score score) {
         Player player = score.getPlayer();
         List<Score> allScores = player.getAllScores();

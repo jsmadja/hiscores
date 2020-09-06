@@ -19,6 +19,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.Is.isA;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -104,7 +105,7 @@ public class GameControllerIntegrationTest extends ContainerDatabaseTest {
                 .contentType(APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(GameSetting.builder().value("Arcade").build())))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.modes[*].name", contains("Black Label", "Arcade")));
+                .andExpect(jsonPath("$.modes[*].name", contains("Black Label", "White Label", "Arcade")));
     }
 
     @Test
@@ -115,7 +116,6 @@ public class GameControllerIntegrationTest extends ContainerDatabaseTest {
                 .content(new ObjectMapper().writeValueAsString(GameSetting.builder().value("Arcade X").afterValue(BLACK_LABEL_MODE_ID).build())))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.modes[*].name", hasItem("Arcade X")));
-
     }
 
     @Test
@@ -159,6 +159,21 @@ public class GameControllerIntegrationTest extends ContainerDatabaseTest {
                 .content(new ObjectMapper().writeValueAsString(new String[]{"PS4", "PS1"})))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.platforms[*].name", contains("NG", "PCB", "PS1", "PS4", "X360")));
+    }
+
+    @Test
+    void getGameById() throws Exception {
+        this.mvc.perform(get("/games/1")
+                .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title", is("Strikers 1945 PLUS")));
+    }
+
+    @Test
+    void getRankings() throws Exception {
+        this.mvc.perform(get("/games/1/rankings")
+                .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
 }

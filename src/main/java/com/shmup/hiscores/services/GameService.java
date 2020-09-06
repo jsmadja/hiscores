@@ -159,7 +159,6 @@ public class GameService {
         }).collect(toList());
     }
 
-    @Deprecated
     public Game findById(Long gameId) {
         return gameRepository.findById(gameId).get();
     }

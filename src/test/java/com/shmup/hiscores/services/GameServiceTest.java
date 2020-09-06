@@ -8,7 +8,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -54,6 +57,17 @@ class GameServiceTest {
         assertThat(savedGame.getShips()).hasSize(1).containsExactly(Ship.builder().game(savedGame).name("Type A").sortOrder(10L).build());
         assertThat(savedGame.getStages()).hasSize(1).containsExactly(Stage.builder().game(savedGame).name("1").sortOrder(10L).build());
         assertThat(savedGame.getPlatforms()).hasSize(1).containsExactly(Platform.builder().game(savedGame).name("NG").build());
+    }
+
+    @Test
+    public void should_get_game_from_db() {
+        Game dbGame = mock(Game.class);
+        Optional<Game> optionalDbGame = Optional.of(dbGame);
+        Mockito.when(gameRepository.findById(1L)).thenReturn(optionalDbGame);
+
+        Game game = gameService.findById(1L);
+
+        assertThat(game).isEqualTo(dbGame);
     }
 
 }

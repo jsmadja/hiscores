@@ -1,5 +1,6 @@
 package com.shmup.hiscores.dto;
 
+import com.shmup.hiscores.models.Score;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -19,5 +20,23 @@ public class ScoreDTO {
     private final String stage;
     private final Long id;
     private final String comment;
+
+    public static ScoreDTO toScoreDTO(Score score) {
+        return new ScoreDTO(
+                score.getRank(),
+                score.getValue(),
+                new PlayerDTO(
+                        score.getPlayer().getId(),
+                        score.getPlayer().getName()
+                ),
+                score.is1CC(),
+                score.getPhoto(),
+                score.getInp(),
+                score.getReplay(),
+                score.getStageName(),
+                score.getId(),
+                score.getComment()
+        );
+    }
 
 }

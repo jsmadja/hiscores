@@ -35,32 +35,32 @@ public class PlayerController {
     private final DifficultyService difficultyService;
     private final CacheService cacheService;
 
-    @RequestMapping("/me")
+    @GetMapping("/me")
     public Player me(@RequestAttribute("player") Player player) {
         return player;
     }
 
-    @RequestMapping("/me/recommendations")
+    @GetMapping("/me/recommendations")
     public Recommendations getRecommendations(@RequestAttribute("player") Player player) {
         return playerService.getRecommendationsFor(player);
     }
 
-    @RequestMapping("/me/kill-list")
+    @GetMapping("/me/kill-list")
     public List<KillListItem> getKillList(@RequestAttribute("player") Player player) {
         return playerService.getKillListFor(player);
     }
 
-    @RequestMapping("/me/games")
+    @GetMapping("/me/games")
     public List<Game> findGames(@RequestAttribute("player") Player player) {
         return gameService.findByPlayer(player);
     }
 
-    @RequestMapping("/me/scores")
+    @GetMapping("/me/scores")
     public List<Score> findScores(@ApiIgnore @RequestAttribute("player") Player player) {
         return scoreService.getLastScoresOf(player);
     }
 
-    @RequestMapping(value = "/me/scores/{id}", method = RequestMethod.POST)
+    @PostMapping(value = "/me/scores/{id}")
     public Score edit(@ApiIgnore @RequestAttribute("player") Player player,
                       @PathVariable("id") Score score,
                       @RequestParam(required = false) MultipartFile photo,
@@ -115,7 +115,7 @@ public class PlayerController {
         return score;
     }
 
-    @RequestMapping(value = "/me/scores", method = RequestMethod.POST)
+    @PostMapping(value = "/me/scores")
     public Score submit(
             @ApiIgnore @RequestAttribute("player") Player player,
             @RequestParam(required = false) MultipartFile photo,
