@@ -18,13 +18,13 @@ values (3, 'X360', 1, '2013-11-29 19:12:15', '2013-11-29 19:12:15');
 
 -- MODES
 insert into mode (id, name, sort_order, game_id, score_type, created_at, updated_at)
-values (2, 'Black Label', 20, 1, '', '2013-11-29 19:12:15', '2013-11-29 19:12:15');
+values (1, 'Black Label', 20, 1, '', '2013-11-29 19:12:15', '2013-11-29 19:12:15');
 insert into mode (id, name, sort_order, game_id, score_type, created_at, updated_at)
-values (3, 'White Label', 30, 1, '', '2013-11-29 19:12:15', '2013-11-29 19:12:15');
+values (2, 'White Label', 30, 1, '', '2013-11-29 19:12:15', '2013-11-29 19:12:15');
 
 -- DIFFICULTIES
 insert into difficulty (id, name, sort_order, game_id, created_at, updated_at)
-values (4, 'Original', 1, 1, '2013-11-29 19:12:15', '2013-11-29 19:12:15');
+values (1, 'Original', 1, 1, '2013-11-29 19:12:15', '2013-11-29 19:12:15');
 
 -- SCORES
 insert into score (id, game_id, player_id, stage_id, mode_id, difficulty_id, platform_id, value, comment, photo, replay,

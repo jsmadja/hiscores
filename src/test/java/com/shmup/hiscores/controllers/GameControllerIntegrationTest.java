@@ -3,10 +3,8 @@ package com.shmup.hiscores.controllers;
 import com.shmup.hiscores.ContainerDatabaseTest;
 import com.shmup.hiscores.dto.GameForm;
 import com.shmup.hiscores.dto.GameSetting;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
@@ -32,12 +30,6 @@ public class GameControllerIntegrationTest extends ContainerDatabaseTest {
 
     @Autowired
     private MockMvc mvc;
-
-    @Value("${api.shmup-cookie-name}")
-    private String shmupCookieName;
-
-    @Value("${api.shmup-cookie-userid}")
-    private String shmupUserId;
 
     @Test
     void createGame_validate_mandatory_fields() throws Exception {
@@ -91,11 +83,6 @@ public class GameControllerIntegrationTest extends ContainerDatabaseTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", isA(Integer.class)))
                 .andExpect(content().contentType(APPLICATION_JSON));
-    }
-
-    @NotNull
-    private Cookie createShmupCookie() {
-        return new Cookie(shmupCookieName, shmupUserId);
     }
 
     @Test

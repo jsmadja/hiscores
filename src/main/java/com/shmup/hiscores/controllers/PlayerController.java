@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 
 import static org.apache.commons.lang3.StringUtils.*;
 
-@Deprecated
 @AllArgsConstructor
 @RestController
 public class PlayerController {
@@ -35,31 +34,42 @@ public class PlayerController {
     private final DifficultyService difficultyService;
     private final CacheService cacheService;
 
+    @Deprecated
     @GetMapping("/me")
     public Player me(@RequestAttribute("player") Player player) {
         return player;
     }
 
+    @Deprecated
     @GetMapping("/me/recommendations")
     public Recommendations getRecommendations(@RequestAttribute("player") Player player) {
         return playerService.getRecommendationsFor(player);
     }
 
+    @Deprecated
     @GetMapping("/me/kill-list")
     public List<KillListItem> getKillList(@RequestAttribute("player") Player player) {
         return playerService.getKillListFor(player);
     }
 
+    @Deprecated
     @GetMapping("/me/games")
     public List<Game> findGames(@RequestAttribute("player") Player player) {
         return gameService.findByPlayer(player);
     }
 
+    @Deprecated
     @GetMapping("/me/scores")
     public List<Score> findScores(@ApiIgnore @RequestAttribute("player") Player player) {
         return scoreService.getLastScoresOf(player);
     }
 
+    @GetMapping("/me/games/{id}/scores")
+    public List<Score> getPlayerLastScoresOfGame(@ApiIgnore @RequestAttribute("player") Player player, @PathVariable("id") Game game) {
+        return scoreService.getPlayerLastScoresOfGame(player, game);
+    }
+
+    @Deprecated
     @PostMapping(value = "/me/scores/{id}")
     public Score edit(@ApiIgnore @RequestAttribute("player") Player player,
                       @PathVariable("id") Score score,
@@ -115,6 +125,7 @@ public class PlayerController {
         return score;
     }
 
+    @Deprecated
     @PostMapping(value = "/me/scores")
     public Score submit(
             @ApiIgnore @RequestAttribute("player") Player player,
@@ -234,7 +245,7 @@ public class PlayerController {
         return toScoreValue(scoreValue, minutes, seconds, milliseconds);
     }
 
-    public BigDecimal toScoreValue(String scoreValue, Integer minutes, Integer seconds, Integer milliseconds) {
+    private BigDecimal toScoreValue(String scoreValue, Integer minutes, Integer seconds, Integer milliseconds) {
         if (isBlank(scoreValue) && minutes == null && seconds == null && milliseconds == null) {
             return null;
         }

@@ -13,7 +13,6 @@ import java.util.*;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
-@Deprecated
 @AllArgsConstructor
 @Service
 public class ScoreService {
@@ -21,42 +20,52 @@ public class ScoreService {
     private final ScoreCustomRepository scoreCustomRepository;
     private final ScoreRepository scoreRepository;
 
+    @Deprecated
     public List<Score> getLastScores() {
         return scoreCustomRepository.getLastScores();
     }
 
+    @Deprecated
     public Optional<Score> getBestScoreFor(Player player, Game game, Mode mode, Difficulty difficulty) {
         return scoreCustomRepository.getBestScoreFor(player, game, mode, difficulty);
     }
 
+    @Deprecated
     public void save(Score score) {
         scoreRepository.save(score);
     }
 
+    @Deprecated
     public Score refresh(Score score) {
         return scoreRepository.findById(score.getId()).get();
     }
 
+    @Deprecated
     public void update(Score score) {
         scoreRepository.save(score);
     }
 
+    @Deprecated
     public List<Score> getLastScoresOf(Player player) {
         return scoreCustomRepository.getLastScoresOf(player);
     }
 
+    @Deprecated
     public Score findById(Long id) {
         return scoreRepository.findById(id).get();
     }
 
+    @Deprecated
     public Score findOldestScoreOf(Player player) {
         return scoreRepository.findFirstByPlayerAndRankIsNotNullOrderByCreatedAtAsc(player);
     }
 
+    @Deprecated
     public Score findLatestScoreOf(Player player) {
         return scoreRepository.findFirstByPlayerAndRankIsNotNullOrderByCreatedAtDesc(player);
     }
 
+    @Deprecated
     public Score findNearestScoreOf(Player player) {
         Map<Score, Score> previousScore = new HashMap<>();
         Comparator<Score> scoreComparator = (s1, s2) -> {
@@ -79,6 +88,7 @@ public class ScoreService {
                 }).min(scoreComparator).orElse(null);
     }
 
+    @Deprecated
     public Score findFarestScoreOf(Player player) {
         Map<Score, Score> previousScore = new HashMap<>();
         return scoreRepository.findByPlayerAndRankIsNotNull(player)
@@ -98,11 +108,16 @@ public class ScoreService {
                 }).orElse(null);
     }
 
+    @Deprecated
     public List<KillListItem> getKillListOf(Player player) {
         return scoreRepository.findByPlayerAndRankIsNotNull(player)
                 .stream()
                 .map((Score score) -> new KillListItem(score, scoreCustomRepository.getPreviousScore(score)))
                 .sorted(comparing(KillListItem::getRatio))
                 .collect(toList());
+    }
+
+    public List<Score> getPlayerLastScoresOfGame(Player player, Game game) {
+        return scoreRepository.findByPlayerAndRankIsNotNullAndGameOrderByCreatedAtDesc(player, game);
     }
 }
