@@ -101,7 +101,14 @@ public class PlayerService {
         Score nearestScore = scoreService.findNearestScoreOf(player);
         Score farestScore = scoreService.findFarestScoreOf(player);
 
-        return new Recommendations(new Recommendation(unplayedMode), new Recommendation(unplayedDifficulty), new Recommendation(unplayedGame), new Recommendation(oldestScore.getGame()), new Recommendation(latestScore.getGame()), new Recommendation(nearestScore.getGame()), new Recommendation(farestScore.getGame()));
+        Recommendation unplayedMode1 = unplayedMode == null ? null : new Recommendation(unplayedMode);
+        Recommendation unplayedDifficulty1 = unplayedDifficulty == null ? null : new Recommendation(unplayedDifficulty);
+        Recommendation unplayedGame1 = unplayedGame == null ? null : new Recommendation(unplayedGame);
+        Recommendation oldestScoredGame = oldestScore == null ? null : new Recommendation(oldestScore.getGame());
+        Recommendation latestScoredGame = latestScore == null ? null : new Recommendation(latestScore.getGame());
+        Recommendation nearestScoredGame = nearestScore == null ? null : new Recommendation(nearestScore.getGame());
+        Recommendation farestScoredGame = farestScore == null ? null : new Recommendation(farestScore.getGame());
+        return new Recommendations(unplayedMode1, unplayedDifficulty1, unplayedGame1, oldestScoredGame, latestScoredGame, nearestScoredGame, farestScoredGame);
     }
 
     public List<KillListItem> getKillListFor(Player player) {

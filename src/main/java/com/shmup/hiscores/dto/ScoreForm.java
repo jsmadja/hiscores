@@ -1,12 +1,14 @@
 package com.shmup.hiscores.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 @Deprecated
 @AllArgsConstructor
 @Data
+@Builder
 public class ScoreForm {
     private String value;
     private Integer minutes;

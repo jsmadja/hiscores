@@ -12,6 +12,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Locale;
 
 @Deprecated
@@ -81,10 +82,12 @@ public class Score extends BaseModel<Score> implements Comparable<Score> {
         this.onecc = this.is1CC();
     }
 
-    public Score(Long id, Game game, Player player, Stage stage, Ship ship, Mode mode, Difficulty difficulty, String comment, Platform platform, BigDecimal value, String replay, Integer rank) {
+    public Score(Date createdAt, Date updatedAt, Long id, Game game, Player player, Stage stage, Ship ship, Mode mode, Difficulty difficulty, String comment, Platform platform, BigDecimal value, String replay, Integer rank) {
         this(game, player, stage, ship, mode, difficulty, comment, platform, value, replay);
         this.rank = rank;
         this.id = id;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Score(Game game, Player player, Stage stage, Ship ship, Mode mode, Difficulty difficulty, String comment, Platform platform, BigDecimal value) {

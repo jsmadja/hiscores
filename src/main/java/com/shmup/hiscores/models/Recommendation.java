@@ -14,7 +14,6 @@ public class Recommendation {
     }
 
     public Recommendation(Difficulty difficulty) {
-        // TODO: Bug si le joueur n'a aucun score avec une difficulté.
         this.difficulty = difficulty;
         this.game = difficulty.getGame();
     }
