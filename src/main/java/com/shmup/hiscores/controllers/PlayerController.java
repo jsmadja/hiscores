@@ -71,7 +71,7 @@ public class PlayerController {
 
     @Deprecated
     @PostMapping(value = "/me/scores/{id}")
-    public Score edit(@ApiIgnore @RequestAttribute("player") Player player,
+    public Score edit(@ApiIgnore @RequestAttribute("player") Player user,
                       @PathVariable("id") Score score,
                       @RequestParam(required = false) MultipartFile photo,
                       @RequestParam(required = false) MultipartFile inp,
@@ -86,8 +86,9 @@ public class PlayerController {
                       @RequestParam(required = false) Integer minutes,
                       @RequestParam(required = false) Integer seconds,
                       @RequestParam(required = false) Integer milliseconds) throws IOException {
-        Logger.getAnonymousLogger().info("Mise a jour du score envoyé par " + player.getName());
-        if (!score.isPlayedBy(player)) {
+        Player player = score.getPlayer();
+        Logger.getAnonymousLogger().info("Mise a jour du score envoyé par " + player);
+        if (!score.isPlayedBy(user) && !user.isSuperAdministrator()) {
             throw new RuntimeException("Unauthorized");
         }
         score.setStage(stage);
@@ -114,8 +115,8 @@ public class PlayerController {
         }
         scoreService.update(score);
         cacheService.removeRankingPictureOf(score.getGame());
-        cacheService.removeSignaturePictureOf(score.getPlayer());
-        cacheService.removeMedalsPictureOf(score.getPlayer().getShmupUserId());
+        cacheService.removeSignaturePictureOf(player);
+        cacheService.removeMedalsPictureOf(player.getShmupUserId());
         gameService.recomputeRanking(score.getGame(), score);
         score = scoreService.refresh(score);
         if (oldRank != null && score.getRank() != null) {
@@ -196,7 +197,7 @@ public class PlayerController {
         BigDecimal value = value(data);
         String comment = data.getComment();
         String replay = data.getReplay();
-        return new Score(game, player, stage, ship, mode, difficulty, comment, platform, value, replay);
+        return new Score(game, player, stage, ship, mode, difficulty, comment, platform, value, replay, null);
     }
 
     private Stage stage(ScoreForm data) {

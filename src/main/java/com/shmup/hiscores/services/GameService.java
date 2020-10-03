@@ -124,7 +124,7 @@ public class GameService {
         List<Score> scores = new ArrayList<>();
         for (int rank = 0; rank < ranking.getScores().size(); rank++) {
             Score score = ranking.getScores().get(rank);
-            scores.add(new Score(score.getCreatedAt(), score.getUpdatedAt(), score.getId(), score.getGame(), score.getPlayer(), score.getStage(), score.getShip(), score.getMode(), score.getDifficulty(), score.getComment(), score.getPlatform(), score.getValue(), score.getReplay(), rank + 1));
+            scores.add(new Score(score.getCreatedAt(), score.getUpdatedAt(), score.getId(), score.getGame(), score.getPlayer(), score.getStage(), score.getShip(), score.getMode(), score.getDifficulty(), score.getComment(), score.getPlatform(), score.getValue(), score.getReplay(), score.getPhoto(), rank + 1));
         }
         Ranking generalRanking = new Ranking(scores);
         generalRanking.setGeneral(true);

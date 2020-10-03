@@ -68,7 +68,7 @@ public class Score extends BaseModel<Score> implements Comparable<Score> {
     @Transient
     private Long gapWithPreviousScore;
 
-    public Score(Game game, Player player, Stage stage, Ship ship, Mode mode, Difficulty difficulty, String comment, Platform platform, BigDecimal value, String replay) {
+    public Score(Game game, Player player, Stage stage, Ship ship, Mode mode, Difficulty difficulty, String comment, Platform platform, BigDecimal value, String replay, String photo) {
         this.game = game;
         this.player = player;
         this.stage = stage;
@@ -79,11 +79,12 @@ public class Score extends BaseModel<Score> implements Comparable<Score> {
         this.platform = platform;
         this.value = value;
         this.replay = replay;
+        this.photo = photo;
         this.onecc = this.is1CC();
     }
 
-    public Score(Date createdAt, Date updatedAt, Long id, Game game, Player player, Stage stage, Ship ship, Mode mode, Difficulty difficulty, String comment, Platform platform, BigDecimal value, String replay, Integer rank) {
-        this(game, player, stage, ship, mode, difficulty, comment, platform, value, replay);
+    public Score(Date createdAt, Date updatedAt, Long id, Game game, Player player, Stage stage, Ship ship, Mode mode, Difficulty difficulty, String comment, Platform platform, BigDecimal value, String replay, String photo, Integer rank) {
+        this(game, player, stage, ship, mode, difficulty, comment, platform, value, replay, photo);
         this.rank = rank;
         this.id = id;
         this.createdAt = createdAt;
