@@ -18,7 +18,7 @@ public class DifficultyRepositoryIntegrationTest extends ContainerDatabaseTest {
 
     @Test
     public void should_find_unplayed_difficulties_of_played_games() {
-        List<Difficulty> difficulties = difficultyRepository.findUnplayedDifficultiesByPlayer(1L);
+        List<Difficulty> difficulties = difficultyRepository.findUnplayedDifficultiesByPlayer(2L);
         assertThat(difficulties).isNotEmpty();
     }
 

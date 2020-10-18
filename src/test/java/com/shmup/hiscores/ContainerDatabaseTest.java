@@ -1,12 +1,12 @@
 package com.shmup.hiscores;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.servlet.http.Cookie;
+import javax.validation.constraints.NotNull;
 
 @Testcontainers
 public abstract class ContainerDatabaseTest {

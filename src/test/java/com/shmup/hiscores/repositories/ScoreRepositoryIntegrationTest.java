@@ -27,7 +27,7 @@ public class ScoreRepositoryIntegrationTest extends ContainerDatabaseTest {
 
     @Test
     public void should_get_all_scores_by_players_and_games() {
-        Player player = playerRepository.findByName("anzymus");
+        Player player = playerRepository.findByName("Mickey");
         Game game = gameRepository.findById(1L).get();
         List<Score> scores = scoreRepository.findByPlayerAndRankIsNotNullAndGameOrderByCreatedAtDesc(player, game);
         assertThat(scores).isNotEmpty();

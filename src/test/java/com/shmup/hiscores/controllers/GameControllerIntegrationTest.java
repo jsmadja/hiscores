@@ -122,9 +122,7 @@ public class GameControllerIntegrationTest extends ContainerDatabaseTest {
                 .cookie(createShmupCookie())
                 .contentType(APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(GameSetting.builder().value("Type A").build())))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.ships[*].name", contains("Type A")))
-                .andExpect(jsonPath("$.ships[*].sortOrder", contains(1)));
+                .andExpect(status().isCreated());
     }
 
     @Test
@@ -133,9 +131,7 @@ public class GameControllerIntegrationTest extends ContainerDatabaseTest {
                 .cookie(createShmupCookie())
                 .contentType(APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(GameSetting.builder().value("2-ALL").build())))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.stages[*].name", contains("2-ALL")))
-                .andExpect(jsonPath("$.stages[*].sortOrder", contains(1)));
+                .andExpect(status().isCreated());
     }
 
     @Test

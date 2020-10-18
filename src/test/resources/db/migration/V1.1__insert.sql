@@ -27,6 +27,8 @@ values (2, 'White Label', 30, 1, '', '2013-11-29 19:12:15', '2013-11-29 19:12:15
 -- DIFFICULTIES
 insert into difficulty (id, name, sort_order, game_id, created_at, updated_at)
 values (1, 'Original', 1, 1, '2013-11-29 19:12:15', '2013-11-29 19:12:15');
+insert into difficulty (id, name, sort_order, game_id, created_at, updated_at)
+values (2, 'Hard', 2, 1, '2013-11-29 19:12:15', '2013-11-29 19:12:15');
 
 -- STAGES
 insert into stage (id, name, sort_order, game_id, created_at, updated_at)

@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -62,15 +61,11 @@ public class PlayerService {
             int firstRankCount = playerCustomRepository.getRankCount(player, 1);
             int secondRankCount = playerCustomRepository.getRankCount(player, 2);
             int thirdRankCount = playerCustomRepository.getRankCount(player, 3);
-            int oneCreditCount = oneccs(player).size();
+            int oneCreditCount = playerCustomRepository.findOneCreditCount(player);
             int gameCount = playerCustomRepository.getGameCount(player);
             bytes = MedalsPicture.createMedalsPicture(firstRankCount, secondRankCount, thirdRankCount, oneCreditCount, gameCount);
         }
         return bytes;
-    }
-
-    public Collection<Score> oneccs(Player player) {
-        return playerCustomRepository.findOneCreditScores(player);
     }
 
     public Player findOrCreatePlayer(String login) {

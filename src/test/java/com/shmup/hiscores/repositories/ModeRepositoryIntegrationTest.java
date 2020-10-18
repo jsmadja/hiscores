@@ -18,7 +18,7 @@ public class ModeRepositoryIntegrationTest extends ContainerDatabaseTest {
 
     @Test
     public void should_find_unplayed_modes_of_played_games() {
-        List<Mode> modes = modeRepository.findUnplayedModesByPlayer(1L);
+        List<Mode> modes = modeRepository.findUnplayedModesByPlayer(2L);
         assertThat(modes).isNotEmpty();
     }
 
