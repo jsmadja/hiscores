@@ -12,8 +12,7 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.http.Cookie;
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.Is.isA;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -112,8 +111,7 @@ public class GameControllerIntegrationTest extends ContainerDatabaseTest {
                 .contentType(APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(GameSetting.builder().value("Easy").afterValue(ORIGINAL_DIFFICULTY_ID).build())))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.difficulties[*].name", contains("Original", "Easy")))
-                .andExpect(jsonPath("$.difficulties[*].sortOrder", contains(1, 11)));
+                .andExpect(jsonPath("$.difficulties[*].name", containsInAnyOrder("Original", "Easy", "Hard")));
     }
 
     @Test

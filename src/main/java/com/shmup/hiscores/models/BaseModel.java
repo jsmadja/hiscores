@@ -2,14 +2,16 @@ package com.shmup.hiscores.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Deprecated
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
@@ -33,7 +35,7 @@ public abstract class BaseModel<T> {
 
     @PreUpdate
     public void onPreUpdate() {
-        if(createdAt == null) {
+        if (createdAt == null) {
             createdAt = new Date();
         }
         updatedAt = new Date();

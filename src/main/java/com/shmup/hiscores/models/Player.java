@@ -1,8 +1,9 @@
 package com.shmup.hiscores.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.Entity;
@@ -10,8 +11,9 @@ import javax.persistence.OneToMany;
 import java.util.*;
 
 @Entity
-@Data
 @NoArgsConstructor
+@Getter
+@Setter
 public class Player extends BaseModel<Player> {
 
     public static Player guest = new Player(0L, "guest");
@@ -35,12 +37,12 @@ public class Player extends BaseModel<Player> {
 
     public Player(String name) {
         super();
-        setName(name);
+        this.name = name;
     }
 
     public Player(Long id, String name) {
         this(name);
-        setId(id);
+        this.id = id;
     }
 
     public void renewUpdateAt() {

@@ -1,10 +1,7 @@
 package com.shmup.hiscores.models;
 
 import com.shmup.hiscores.formatters.ScoreFormatter;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import javax.persistence.Entity;
@@ -18,7 +15,8 @@ import java.util.Locale;
 @Deprecated
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Score extends BaseModel<Score> implements Comparable<Score> {
