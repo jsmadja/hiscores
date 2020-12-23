@@ -8,20 +8,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 
+import static com.shmup.hiscores.drawer.Images.compareImages;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class RankingPictureTest {
 
     private static final boolean SAVE_SNAPSHOTS = false;
-
-    public static boolean compareImages(BufferedImage originalScreenshot, BufferedImage currentScreenshot) throws IOException {
-        byte[] imageInByteOriginal = Images.toBytes(originalScreenshot);
-        byte[] imageInByteCurrent = Images.toBytes(currentScreenshot);
-        return Arrays.equals(imageInByteOriginal, imageInByteCurrent);
-    }
 
     @Test
     public void should_create_a_ranking_picture_with_one_ranking_with_mode_and_difficulty() throws IOException {
@@ -34,7 +28,9 @@ class RankingPictureTest {
         List<Ranking> rankings = List.of(ranking);
         BufferedImage actual = RankingPicture.createRankingPicture(game, rankings);
         File expected = new File("src/test/resources/one_ranking_with_mode_and_difficulty.png");
-        saveSnasphot(actual, expected);
+        if (SAVE_SNAPSHOTS) {
+            Images.saveSnasphot(actual, expected);
+        }
         assertThat(compareImages(actual, ImageIO.read(expected))).isTrue();
     }
 
@@ -49,7 +45,9 @@ class RankingPictureTest {
         List<Ranking> rankings = List.of(ranking);
         BufferedImage actual = RankingPicture.createRankingPicture(game, rankings);
         File expected = new File("src/test/resources/one_ranking_with_only_mode.png");
-        saveSnasphot(actual, expected);
+        if (SAVE_SNAPSHOTS) {
+            Images.saveSnasphot(actual, expected);
+        }
         assertThat(compareImages(actual, ImageIO.read(expected))).isTrue();
     }
 
@@ -64,7 +62,9 @@ class RankingPictureTest {
         List<Ranking> rankings = List.of(ranking);
         BufferedImage actual = RankingPicture.createRankingPicture(game, rankings);
         File expected = new File("src/test/resources/one_ranking_with_only_difficulty.png");
-        saveSnasphot(actual, expected);
+        if (SAVE_SNAPSHOTS) {
+            Images.saveSnasphot(actual, expected);
+        }
         assertThat(compareImages(actual, ImageIO.read(expected))).isTrue();
     }
 
@@ -80,14 +80,10 @@ class RankingPictureTest {
         List<Ranking> rankings = List.of(ranking);
         BufferedImage actual = RankingPicture.createRankingPicture(game, rankings);
         File expected = new File("src/test/resources/one_ranking_with_one_general_ranking.png");
-        saveSnasphot(actual, expected);
-        assertThat(compareImages(actual, ImageIO.read(expected))).isTrue();
-    }
-
-    private void saveSnasphot(BufferedImage actual, File expected) throws IOException {
         if (SAVE_SNAPSHOTS) {
-            ImageIO.write(actual, "png", expected);
+            Images.saveSnasphot(actual, expected);
         }
+        assertThat(compareImages(actual, ImageIO.read(expected))).isTrue();
     }
 
     private List<Score> createScores(Player player, Game game, Mode mode, Difficulty difficulty) {

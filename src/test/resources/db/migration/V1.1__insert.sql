@@ -29,6 +29,8 @@ insert into difficulty (id, name, sort_order, game_id, created_at, updated_at)
 values (1, 'Original', 1, 1, '2013-11-29 19:12:15', '2013-11-29 19:12:15');
 insert into difficulty (id, name, sort_order, game_id, created_at, updated_at)
 values (2, 'Hard', 2, 1, '2013-11-29 19:12:15', '2013-11-29 19:12:15');
+insert into difficulty (id, name, sort_order, game_id, created_at, updated_at)
+values (3, 'Very Hard', 3, 1, '2013-11-29 19:12:15', '2013-11-29 19:12:15');
 
 -- STAGES
 insert into stage (id, name, sort_order, game_id, created_at, updated_at)
@@ -42,4 +44,8 @@ values (1, 'Type I', 1, 1, '2013-12-01 00:36:53', '2013-12-01 00:36:53');
 insert into score (id, game_id, player_id, stage_id, mode_id, difficulty_id, platform_id, value, comment, photo, replay,
                    rank, ship_id, created_at, updated_at, onecc, progression, inp)
 values (1, 1, 2, NULL, 1, 1, 1, 425027421, 'All(Lx4) Reco Normal', null, null, 1, null, '2013-11-30 16:59:00',
+        '2019-11-23 19:04:31', 1, null, null);
+insert into score (id, game_id, player_id, stage_id, mode_id, difficulty_id, platform_id, value, comment, photo, replay,
+                   rank, ship_id, created_at, updated_at, onecc, progression, inp)
+values (2, 1, 2, NULL, 1, 2, 2, 425027421, 'All(Lx4) Reco Normal', null, null, 1, null, '2013-11-30 16:59:00',
         '2019-11-23 19:04:31', 1, null, null);

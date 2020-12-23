@@ -1,5 +1,6 @@
 package com.shmup.hiscores.services;
 
+import com.shmup.hiscores.drawer.Images;
 import com.shmup.hiscores.drawer.MedalsPicture;
 import com.shmup.hiscores.models.*;
 import com.shmup.hiscores.repositories.PlayerCustomRepository;
@@ -63,7 +64,7 @@ public class PlayerService {
             int thirdRankCount = playerCustomRepository.getRankCount(player, 3);
             int oneCreditCount = playerCustomRepository.findOneCreditCount(player);
             int gameCount = playerCustomRepository.getGameCount(player);
-            bytes = MedalsPicture.createMedalsPicture(firstRankCount, secondRankCount, thirdRankCount, oneCreditCount, gameCount);
+            bytes = Images.toBytes(MedalsPicture.createMedalsPicture(firstRankCount, secondRankCount, thirdRankCount, oneCreditCount, gameCount));
         }
         return bytes;
     }

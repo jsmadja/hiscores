@@ -3,7 +3,9 @@ package com.shmup.hiscores.drawer;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class Images {
 
@@ -15,6 +17,16 @@ public class Images {
         bytes = stream.toByteArray();
         stream.close();
         return bytes;
+    }
+
+    public static boolean compareImages(BufferedImage originalScreenshot, BufferedImage currentScreenshot) throws IOException {
+        byte[] imageInByteOriginal = Images.toBytes(originalScreenshot);
+        byte[] imageInByteCurrent = Images.toBytes(currentScreenshot);
+        return Arrays.equals(imageInByteOriginal, imageInByteCurrent);
+    }
+
+    public static void saveSnasphot(BufferedImage actual, File expected) throws IOException {
+        ImageIO.write(actual, "png", expected);
     }
 
 }

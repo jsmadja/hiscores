@@ -26,7 +26,7 @@ class PlatformsControllerIntegrationTest extends ContainerDatabaseTest {
 
     @Test
     void getGamesByPlatform() throws Exception {
-        this.mvc.perform(get("/platforms/NG/games"))
+        this.mvc.perform(get("/platforms/PCB/games"))
                 .andExpect(jsonPath("$[0].title").exists());
     }
 
