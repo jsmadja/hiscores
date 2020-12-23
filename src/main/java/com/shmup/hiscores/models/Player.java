@@ -106,6 +106,7 @@ public class Player extends BaseModel<Player> {
                 || id == 226    // Radigo
                 || id == 57     // Akaimakai
                 || id == 223    // Guts
+                || id == 1462   // mutmut02
                 ;
     }
 
