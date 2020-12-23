@@ -111,7 +111,7 @@ public class GameControllerIntegrationTest extends ContainerDatabaseTest {
                 .contentType(APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(GameSetting.builder().value("Easy").afterValue(ORIGINAL_DIFFICULTY_ID).build())))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.difficulties[*].name", containsInAnyOrder("Original", "Easy", "Hard")));
+                .andExpect(jsonPath("$.difficulties[*].name", containsInAnyOrder("Original", "Easy", "Hard", "Very Hard")));
     }
 
     @Test
