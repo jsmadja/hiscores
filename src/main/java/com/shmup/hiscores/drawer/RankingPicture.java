@@ -11,11 +11,10 @@ import java.util.List;
 import static java.awt.RenderingHints.*;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
-@Deprecated
 public class RankingPicture {
 
     public static BufferedImage createRankingPicture(Game game, List<Ranking> rankings) {
-        Collection<Difficulty> difficulties = new ArrayList<Difficulty>(game.getDifficulties());
+        Collection<Difficulty> difficulties = new ArrayList<>(game.getDifficulties());
         Collection<Mode> modes = new ArrayList<Mode>(game.getModes());
         if (difficulties.isEmpty()) {
             difficulties.add(null);

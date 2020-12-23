@@ -2,12 +2,12 @@ package com.shmup.hiscores.drawer;
 
 import com.shmup.hiscores.models.Game;
 import com.shmup.hiscores.models.Score;
-import static java.lang.Math.max;
 
 import java.awt.*;
 import java.util.List;
 
-@Deprecated
+import static java.lang.Math.max;
+
 public class RankingGameConfiguration {
 
     static final int fontHeight = 12;
