@@ -1,4 +1,4 @@
-FROM openjdk:13-jdk-alpine3.10
+FROM openjdk:15-jdk-alpine3.12
 
 RUN apk update && apk add ttf-dejavu
 
