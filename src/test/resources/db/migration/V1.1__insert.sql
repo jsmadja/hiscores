@@ -43,9 +43,15 @@ values (1, 'Type I', 1, 1, '2013-12-01 00:36:53', '2013-12-01 00:36:53');
 -- SCORES
 insert into score (id, game_id, player_id, stage_id, mode_id, difficulty_id, platform_id, value, comment, photo, replay,
                    rank, ship_id, created_at, updated_at, onecc, progression, inp)
-values (1, 1, 2, NULL, 1, 1, 1, 425027421, 'All(Lx4) Reco Normal', null, null, 1, null, '2013-11-30 16:59:00',
+values (1, 1, 2, NULL, 1, 1, 1, 425027421, 'All(Lx4) Reco Normal', null, 1, 1, null, '2013-11-30 16:59:00',
         '2019-11-23 19:04:31', 1, null, null);
 insert into score (id, game_id, player_id, stage_id, mode_id, difficulty_id, platform_id, value, comment, photo, replay,
                    rank, ship_id, created_at, updated_at, onecc, progression, inp)
-values (2, 1, 2, NULL, 1, 2, 2, 425027421, 'All(Lx4) Reco Normal', null, null, 1, null, '2013-11-30 16:59:00',
+values (3, 1, 1, NULL, 1, 1, 1, 425027420, 'All(Lx4) Reco Normal', null, 1, 2, null, '2013-11-30 16:59:00',
+        '2019-11-23 19:04:31', 1, null, null);
+
+
+insert into score (id, game_id, player_id, stage_id, mode_id, difficulty_id, platform_id, value, comment, photo, replay,
+                   rank, ship_id, created_at, updated_at, onecc, progression, inp)
+values (2, 1, 2, NULL, 1, 2, 2, 425027421, 'All(Lx4) Reco Normal', null, 1, 1, null, '2013-11-30 16:59:00',
         '2019-11-23 19:04:31', 1, null, null);

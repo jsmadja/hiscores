@@ -14,7 +14,6 @@ import java.util.Optional;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
-@Deprecated
 @Repository
 public class ScoreCustomRepository {
 
@@ -24,7 +23,6 @@ public class ScoreCustomRepository {
     public List<Score> getLastScores() {
         return this.getLastScoresOf(null);
     }
-
 
     public List<Score> getLastScoresOf(Player player) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
