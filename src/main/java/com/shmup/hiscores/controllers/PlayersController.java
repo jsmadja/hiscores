@@ -14,7 +14,6 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-@Deprecated
 @AllArgsConstructor
 @RestController
 public class PlayersController {
@@ -36,7 +35,7 @@ public class PlayersController {
     }
 
     @GetMapping("/players/{player}/scores")
-    public List<Score> getVersus(@PathVariable("player") Player player) {
+    public List<Score> getPlayerScores(@PathVariable("player") Player player) {
         return player.getScores();
     }
 
