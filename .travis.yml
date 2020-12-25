@@ -4,4 +4,4 @@ services:
   - docker
 
 jdk:
-  - openjdk13
+  - openjdk15
