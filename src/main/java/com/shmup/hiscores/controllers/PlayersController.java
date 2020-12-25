@@ -1,11 +1,11 @@
 package com.shmup.hiscores.controllers;
 
+import com.shmup.hiscores.dto.PlayerDTO;
 import com.shmup.hiscores.models.Player;
 import com.shmup.hiscores.models.Score;
 import com.shmup.hiscores.models.Versus;
 import com.shmup.hiscores.services.PlayerService;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,19 +21,12 @@ public class PlayersController {
 
     private final PlayerService playerService;
 
-    @Data
-    @AllArgsConstructor
-    private static class PlayerDto {
-        private Long id;
-        private String name;
-    }
-
     @GetMapping("/players")
-    public List<PlayerDto> findAll() {
+    public List<PlayerDTO> findAll() {
         return this.playerService
                 .findAll()
                 .stream()
-                .map(player -> new PlayerDto(player.getId(), player.getName()))
+                .map(player -> new PlayerDTO(player.getId(), player.getName()))
                 .collect(toList());
     }
 
