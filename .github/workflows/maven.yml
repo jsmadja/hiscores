@@ -22,19 +22,18 @@ jobs:
           java-version: 15
       - name: Build with Maven
         run: mvn -B install --file pom.xml
-      - name: Upload target directory
-        uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v1
         with:
-          name: target
-          path: target
+          name: de-sy-file
+          path: target/
   push:
     name: Push Docker Image
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Download target
-        uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v1
         with:
-          name: target
+          name: de-sy-file
+          path: target/
       - name: Build and push Docker images
         uses: docker/build-push-action@v2.2.1
