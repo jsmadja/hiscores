@@ -1,5 +1,7 @@
 package com.shmup.hiscores.drawer;
 
+import org.springframework.stereotype.Component;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,12 +14,13 @@ import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static org.apache.commons.lang3.StringUtils.leftPad;
 
+@Component
 public class MedalsPicture {
 
     private final static Font gameFont = new Font("Verdana", BOLD, 11);
     private final static Font scoreFont = new Font("Verdana", BOLD, 14);
 
-    public static BufferedImage createMedalsPicture(int firstRankCount, int secondRankCount, int thirdRankCount, int oneCreditCount, int gameCount) {
+    public BufferedImage createMedalsPicture(int firstRankCount, int secondRankCount, int thirdRankCount, int oneCreditCount, int gameCount) {
         try {
             BufferedImage bi = ImageIO.read(new File("public/images/medailles.png"));
             Graphics2D graphics = bi.createGraphics();
@@ -34,19 +37,19 @@ public class MedalsPicture {
         }
     }
 
-    private static void draw(Graphics2D graphics, Integer count, int i) {
+    private void draw(Graphics2D graphics, Integer count, int i) {
         graphics.setColor(RankingGameConfiguration.COLOR_SHMUP_TEXT);
         graphics.setFont(gameFont);
         graphics.drawString(pad(count), i, 25);
     }
 
-    private static void drawBelow(Graphics2D graphics, String text) {
+    private void drawBelow(Graphics2D graphics, String text) {
         graphics.setColor(RankingGameConfiguration.COLOR_SCORE_TEXT);
         graphics.setFont(scoreFont);
         graphics.drawString(text, 10, 45);
     }
 
-    private static String pad(Integer value) {
+    private String pad(Integer value) {
         return leftPad(value.toString(), 2);
     }
 

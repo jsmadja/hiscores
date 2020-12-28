@@ -29,7 +29,14 @@ public class PicturesController {
 
     private final PlayerService playerService;
 
-    @Deprecated
+    private final Images images;
+
+    private final VersusPicture versusPicture;
+
+    private final SignaturePicture signaturePicture;
+
+    private final RankingPicture rankingPicture;
+
     @GetMapping("/player/{shmupUserId}/medals.png")
     public void medals(@PathVariable Long shmupUserId, HttpServletResponse response) throws IOException {
         Optional<byte[]> medalsPicture = cacheService.getMedalsPictureOf(shmupUserId);
@@ -44,14 +51,13 @@ public class PicturesController {
         response.getOutputStream().write(medalsPicture.get());
     }
 
-    @Deprecated
     // for forum.shmup.com backward compatibility
     @GetMapping("/game/{id}/ranking.png")
     public void getRankingPicture(@PathVariable("id") Game game, HttpServletResponse response) throws IOException {
         Optional<byte[]> rankingPicture = cacheService.getRankingPictureOf(game);
         if (rankingPicture.isEmpty()) {
-            BufferedImage image = RankingPicture.createRankingPicture(game, gameService.getRankingsOf(game));
-            byte[] bytes = Images.toBytes(image);
+            BufferedImage image = this.rankingPicture.createRankingPicture(game, gameService.getRankingsOf(game));
+            byte[] bytes = images.toBytesC(image);
             cacheService.setRankingPictureOf(game, bytes);
             rankingPicture = Optional.of(bytes);
         }
@@ -60,13 +66,12 @@ public class PicturesController {
         response.getOutputStream().write(rankingPicture.get());
     }
 
-    @Deprecated
     @GetMapping("/player/{player}/signature.png")
     public void getSignature(@PathVariable("player") Player player, HttpServletResponse response) throws IOException {
         Optional<byte[]> signaturePicture = cacheService.getSignaturePictureOf(player);
         if (signaturePicture.isEmpty()) {
-            BufferedImage image = SignaturePicture.createSignaturePicture(player);
-            byte[] bytes = Images.toBytes(image);
+            BufferedImage image = this.signaturePicture.createSignaturePicture(player);
+            byte[] bytes = images.toBytesC(image);
             cacheService.setSignaturePictureOf(player, bytes);
             signaturePicture = Optional.of(bytes);
         }
@@ -75,13 +80,12 @@ public class PicturesController {
         response.getOutputStream().write(signaturePicture.get());
     }
 
-    @Deprecated
     @GetMapping("/player/{player}/versus.png")
     public void getVersusPicture(@PathVariable("player") Player player, HttpServletResponse response) throws IOException {
         Optional<byte[]> versusPicture = cacheService.getVersusPictureOf(player);
         if (versusPicture.isEmpty()) {
-            BufferedImage image = VersusPicture.createVersusPicture(player, playerService.getBestVersusFor(player));
-            byte[] bytes = Images.toBytes(image);
+            BufferedImage image = this.versusPicture.createVersusPicture(player, playerService.getBestVersusFor(player));
+            byte[] bytes = images.toBytesC(image);
             cacheService.setVersusPictureOf(player, bytes);
             versusPicture = Optional.of(bytes);
         }

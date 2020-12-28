@@ -19,9 +19,12 @@ public class SignaturePictureTest {
 
     private static final boolean SAVE_SNAPSHOTS = false;
 
+    private final SignaturePicture signaturePicture = new SignaturePicture();
+    private final Images images = new Images();
+
     @Test
     public void should_create_signature_picture() throws IOException {
-        BufferedImage actual = SignaturePicture.createSignaturePicture(player());
+        BufferedImage actual = signaturePicture.createSignaturePicture(player());
         File expected = new File("src/test/resources/signature.png");
         if (SAVE_SNAPSHOTS) {
             Images.saveSnasphot(actual, expected);

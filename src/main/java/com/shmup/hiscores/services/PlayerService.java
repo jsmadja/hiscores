@@ -23,6 +23,7 @@ public class PlayerService {
     private final DifficultyService difficultyService;
     private final GameService gameService;
     private final ScoreService scoreService;
+    private final MedalsPicture medalsPicture;
 
     public Player findByShmupUserId(Long shmupUserId) {
         return playerRepository.findByShmupUserId(shmupUserId);
@@ -64,7 +65,7 @@ public class PlayerService {
             int thirdRankCount = playerCustomRepository.getRankCount(player, 3);
             int oneCreditCount = playerCustomRepository.findOneCreditCount(player);
             int gameCount = playerCustomRepository.getGameCount(player);
-            bytes = Images.toBytes(MedalsPicture.createMedalsPicture(firstRankCount, secondRankCount, thirdRankCount, oneCreditCount, gameCount));
+            bytes = Images.toBytes(medalsPicture.createMedalsPicture(firstRankCount, secondRankCount, thirdRankCount, oneCreditCount, gameCount));
         }
         return bytes;
     }

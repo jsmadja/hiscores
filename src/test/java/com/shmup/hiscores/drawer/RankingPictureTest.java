@@ -17,6 +17,8 @@ class RankingPictureTest {
 
     private static final boolean SAVE_SNAPSHOTS = false;
 
+    private final RankingPicture rankingPicture = new RankingPicture();
+
     @Test
     public void should_create_a_ranking_picture_with_one_ranking_with_mode_and_difficulty() throws IOException {
         Player player = createPlayer();
@@ -26,7 +28,7 @@ class RankingPictureTest {
 
         Ranking ranking = new Ranking(scores, game.getDifficulties().get(0), game.getModes().get(0));
         List<Ranking> rankings = List.of(ranking);
-        BufferedImage actual = RankingPicture.createRankingPicture(game, rankings);
+        BufferedImage actual = rankingPicture.createRankingPicture(game, rankings);
         File expected = new File("src/test/resources/one_ranking_with_mode_and_difficulty.png");
         if (SAVE_SNAPSHOTS) {
             Images.saveSnasphot(actual, expected);
@@ -43,7 +45,7 @@ class RankingPictureTest {
 
         Ranking ranking = new Ranking(scores, game.getModes().get(0));
         List<Ranking> rankings = List.of(ranking);
-        BufferedImage actual = RankingPicture.createRankingPicture(game, rankings);
+        BufferedImage actual = rankingPicture.createRankingPicture(game, rankings);
         File expected = new File("src/test/resources/one_ranking_with_only_mode.png");
         if (SAVE_SNAPSHOTS) {
             Images.saveSnasphot(actual, expected);
@@ -60,7 +62,7 @@ class RankingPictureTest {
 
         Ranking ranking = new Ranking(scores, game.getDifficulties().get(0));
         List<Ranking> rankings = List.of(ranking);
-        BufferedImage actual = RankingPicture.createRankingPicture(game, rankings);
+        BufferedImage actual = rankingPicture.createRankingPicture(game, rankings);
         File expected = new File("src/test/resources/one_ranking_with_only_difficulty.png");
         if (SAVE_SNAPSHOTS) {
             Images.saveSnasphot(actual, expected);
@@ -78,7 +80,7 @@ class RankingPictureTest {
         Ranking ranking = new Ranking(scores);
         ranking.setGeneral(true);
         List<Ranking> rankings = List.of(ranking);
-        BufferedImage actual = RankingPicture.createRankingPicture(game, rankings);
+        BufferedImage actual = rankingPicture.createRankingPicture(game, rankings);
         File expected = new File("src/test/resources/one_ranking_with_one_general_ranking.png");
         if (SAVE_SNAPSHOTS) {
             Images.saveSnasphot(actual, expected);
