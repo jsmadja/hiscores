@@ -35,6 +35,9 @@ jobs:
         with:
           name: de-sy-file
           path: target/
+      - name: Display structure of downloaded files
+        run: ls -R
+        working-directory: .
       - name: Build and push Docker images
         uses: docker/build-push-action@v2.2.1
         with:
