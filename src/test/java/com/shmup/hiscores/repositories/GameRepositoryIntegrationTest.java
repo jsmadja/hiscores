@@ -36,7 +36,7 @@ public class GameRepositoryIntegrationTest extends ContainerDatabaseTest {
                 .build();
         game.setDifficulties(List.of(Difficulty.builder().name("Easy").sortOrder(1L).game(game).build()));
         game.setModes(List.of(Mode.builder().name("Arcade").sortOrder(1L).game(game).build()));
-        game.setPlatforms(List.of(Platform.builder().name("NG").game(game).build()));
+        game.setPlatforms(List.of(Platform.builder().name("SWITCH").game(game).build()));
         game.setShips(List.of(Ship.builder().name("Type A").sortOrder(1L).game(game).build()));
         game.setStages(List.of(Stage.builder().name("1").sortOrder(1L).game(game).build()));
 
@@ -45,7 +45,7 @@ public class GameRepositoryIntegrationTest extends ContainerDatabaseTest {
 
         assertThat(savedGame.getPlatforms()).hasSize(1);
         assertThat(savedGame.getPlatforms().get(0).getId()).isNotNull();
-        assertThat(savedGame.getPlatforms().get(0).getName()).isEqualTo("NG");
+        assertThat(savedGame.getPlatforms().get(0).getName()).isEqualTo("SWITCH");
 
         assertThat(savedGame.getStages()).hasSize(1);
         assertThat(savedGame.getStages().get(0)).extracting("name", "sortOrder").contains("1", 1L);
@@ -131,12 +131,12 @@ public class GameRepositoryIntegrationTest extends ContainerDatabaseTest {
                 .build();
         Game savedGame = gameRepository.save(game);
 
-        Platform platform = Platform.builder().game(savedGame).name("NG").build();
+        Platform platform = Platform.builder().game(savedGame).name("PS3").build();
         savedGame.add(platform);
 
         Game updatedGame = gameRepository.save(savedGame);
         assertThat(updatedGame.getPlatforms()).hasSize(1);
-        assertThat(updatedGame.getPlatforms().get(0).getName()).isEqualTo("NG");
+        assertThat(updatedGame.getPlatforms().get(0).getName()).isEqualTo("PS3");
     }
 
 }

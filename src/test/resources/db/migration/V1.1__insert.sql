@@ -79,6 +79,7 @@ values (2,
         1,
         '2013-11-29 19:12:15',
         '2013-11-29 19:12:15');
+
 insert into platform (id,
                       name,
                       game_id,

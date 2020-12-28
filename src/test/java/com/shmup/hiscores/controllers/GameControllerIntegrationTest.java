@@ -65,7 +65,7 @@ public class GameControllerIntegrationTest extends ContainerDatabaseTest {
     @Test
     void createGame_valid_form() throws Exception {
         GameForm game = GameForm.builder()
-                .title("Espgaluda II")
+                .title("Espgaluda II.2")
                 .cover("https://hiscores.shmup.com/covers/25.jpg")
                 .thread("http://forum.shmup.com/viewtopic.php?f=20&t=15093")
                 .difficulties(new String[]{"Easy"})
