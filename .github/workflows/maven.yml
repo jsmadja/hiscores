@@ -32,9 +32,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: docker/setup-buildx-action@v1
-        with:
-          driver: docker
       - uses: actions/download-artifact@v1
         with:
           name: de-sy-file
@@ -53,4 +50,9 @@ jobs:
           context: .
           file: ./Dockerfile
           tags: jsmadja/hiscores:latest
-          push: true
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: jsmadja/hiscores
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
