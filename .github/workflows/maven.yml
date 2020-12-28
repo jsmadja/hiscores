@@ -26,3 +26,7 @@ jobs:
         run: mvn -B install --file pom.xml
       - name: Build and push Docker images
         uses: docker/build-push-action@v2.2.1
+        with:
+          name: libs and snapshot
+          path: |
+            target
