@@ -4,6 +4,7 @@ import com.shmup.hiscores.models.Game;
 import com.shmup.hiscores.models.Player;
 import com.shmup.hiscores.models.Score;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisabledIfEnvironmentVariable(named = "CI", matches = "true")
 public class SignaturePictureTest {
 
     private static final boolean SAVE_SNAPSHOTS = false;

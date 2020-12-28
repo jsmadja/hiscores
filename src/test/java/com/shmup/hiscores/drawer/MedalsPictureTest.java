@@ -1,6 +1,7 @@
 package com.shmup.hiscores.drawer;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -15,6 +16,7 @@ public class MedalsPictureTest {
 
     private final MedalsPicture medalsPicture = new MedalsPicture();
 
+    @DisabledIfEnvironmentVariable(named = "CI", matches = "true")
     @Test
     public void should_create_medals_picture() throws IOException {
         BufferedImage actual = medalsPicture.createMedalsPicture(1, 2, 3, 4, 5);

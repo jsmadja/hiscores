@@ -3,5 +3,8 @@ language: java
 services:
   - docker
 
+env:
+  - CI=true
+
 jdk:
   - openjdk15

@@ -2,6 +2,7 @@ package com.shmup.hiscores.drawer;
 
 import com.shmup.hiscores.models.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -13,6 +14,7 @@ import java.util.List;
 import static com.shmup.hiscores.drawer.Images.compareImages;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisabledIfEnvironmentVariable(named = "CI", matches = "true")
 class RankingPictureTest {
 
     private static final boolean SAVE_SNAPSHOTS = false;
