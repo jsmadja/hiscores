@@ -9,12 +9,12 @@ on:
 jobs:
   deploy:
     name: Deploy
-  runs-on: ubuntu-latest
-    steps:
-      - name: Deploy hiscores
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.PROD_HOST }}
-          username: ${{ secrets.PROD_USERNAME }}
-          password: ${{ secrets.PROD_PASSWORD }}
-          script: docker-compose pull && docker-compose down && docker-compose up -d
+    runs-on: ubuntu-latest
+      steps:
+        - name: Deploy hiscores
+          uses: appleboy/ssh-action@master
+          with:
+            host: ${{ secrets.PROD_HOST }}
+            username: ${{ secrets.PROD_USERNAME }}
+            password: ${{ secrets.PROD_PASSWORD }}
+            script: docker-compose pull && docker-compose down && docker-compose up -d
