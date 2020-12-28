@@ -13,3 +13,12 @@ services:
       MYSQL_PASSWORD: password
     ports:
       - 3306:3306
+  back:
+    image: jsmadja/hiscores:v21
+    environment:
+      DB_PASSWORD: XedQr25m1710calos
+      DB_USER: root
+      DB_PORT: 3307
+      DB_HOST: kaddath.fr
+    ports:
+      - 32801:8080
