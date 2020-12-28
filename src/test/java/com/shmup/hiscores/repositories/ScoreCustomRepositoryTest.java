@@ -47,8 +47,8 @@ class ScoreCustomRepositoryTest extends ContainerDatabaseTest {
 
     @Test
     public void should_get_previous_score() {
-        Score secondRankedScore = scoreRepository.findById(4L).get();
-        Score firstRankedScore = scoreRepository.findById(2L).get();
+        Score firstRankedScore = scoreRepository.findById(1L).get();
+        Score secondRankedScore = scoreRepository.findById(2L).get();
         Score previousScore = scoreCustomRepository.getPreviousScore(secondRankedScore).get();
         assertThat(previousScore.getId()).isEqualTo(firstRankedScore.getId());
     }
