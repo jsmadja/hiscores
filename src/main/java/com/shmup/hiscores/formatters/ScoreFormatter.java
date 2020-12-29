@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 
 import static org.apache.commons.lang3.StringUtils.leftPad;
 
-@Deprecated
 public class ScoreFormatter {
 
     public static String format(BigDecimal value) {
