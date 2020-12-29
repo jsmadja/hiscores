@@ -34,19 +34,16 @@ public class PlayerController {
     private final DifficultyService difficultyService;
     private final CacheService cacheService;
 
-    @Deprecated
     @GetMapping("/me")
     public Player me(@RequestAttribute("player") Player player) {
         return player;
     }
 
-    @Deprecated
     @GetMapping("/me/recommendations")
     public Recommendations getRecommendations(@RequestAttribute("player") Player player) {
         return playerService.getRecommendationsFor(player);
     }
 
-    @Deprecated
     @GetMapping("/me/kill-list")
     public List<KillListItem> getKillList(@RequestAttribute("player") Player player) {
         return playerService.getKillListFor(player);
