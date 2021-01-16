@@ -38,6 +38,7 @@ public class PlayerCustomRepository {
                 .select(cb.count(score))
                 .where(
                         cb.equal(score.get("player"), player),
+                        cb.isNotNull(score.get("rank")),
                         cb.equal(score.get("onecc"), true)
                 );
         return entityManager.createQuery(cq).getSingleResult().intValue();
