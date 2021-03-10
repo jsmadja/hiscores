@@ -1,18 +1,25 @@
 package com.shmup.hiscores.controllers;
 
+import com.shmup.hiscores.dto.GameForm;
 import com.shmup.hiscores.dto.PlayerDTO;
+import com.shmup.hiscores.dto.PlayerForm;
+import com.shmup.hiscores.models.Game;
 import com.shmup.hiscores.models.Player;
 import com.shmup.hiscores.models.Score;
 import com.shmup.hiscores.models.Versus;
 import com.shmup.hiscores.services.PlayerService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @AllArgsConstructor
 @RestController
@@ -39,4 +46,13 @@ public class PlayersController {
         return player.getScores();
     }
 
+    @PostMapping("/players")
+    @ApiOperation(value = "create a new player")
+    public ResponseEntity<PlayerDTO> createPlayer(@RequestAttribute(value = "player") Player player, @ApiParam(value = "The player to create", required = true) @Valid @RequestBody PlayerForm playerForm) {
+        if (player.isAdministrator()) {
+            Player createdPlayer = playerService.findOrCreatePlayer(playerForm.getName(), playerForm.getShmupUserId());
+            return new ResponseEntity<>(new PlayerDTO(createdPlayer.getId(), createdPlayer.getName()), CREATED);
+        }
+        return new ResponseEntity<>(UNAUTHORIZED);
+    }
 }

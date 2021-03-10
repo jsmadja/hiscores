@@ -1,6 +1,9 @@
 package com.shmup.hiscores.controllers;
 
+import com.shmup.hiscores.dto.GameSetting;
 import com.shmup.hiscores.dto.PlayerDTO;
+import com.shmup.hiscores.dto.PlayerForm;
+import com.shmup.hiscores.models.Game;
 import com.shmup.hiscores.models.Player;
 import com.shmup.hiscores.models.Score;
 import com.shmup.hiscores.models.Versus;
@@ -10,13 +13,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.springframework.http.HttpStatus.CREATED;
 
 @ExtendWith(MockitoExtension.class)
 class PlayersControllerTest {
@@ -57,6 +61,19 @@ class PlayersControllerTest {
         Versus actualVersus = playersController.getVersus(player1, player2);
 
         assertThat(actualVersus).isEqualTo(versus);
+    }
+
+    @Test
+    public void should_create_player() {
+        PlayerForm playerForm = new PlayerForm("name", 1L);
+        Player player = mock(Player.class);
+        when(player.isAdministrator()).thenReturn(true);
+        when(playerService.findOrCreatePlayer("name", 1L)).thenReturn(player);
+
+        ResponseEntity<PlayerDTO> response = playersController.createPlayer(player, playerForm);
+
+        verify(playerService).findOrCreatePlayer("name", 1L);
+        assertThat(response.getStatusCode()).isEqualTo(CREATED);
     }
 
 }
