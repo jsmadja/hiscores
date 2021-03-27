@@ -10,13 +10,16 @@ import com.shmup.hiscores.services.CacheService;
 import com.shmup.hiscores.services.GameService;
 import com.shmup.hiscores.services.PlayerService;
 import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -64,6 +67,18 @@ public class PicturesController {
         response.setContentType("image/png");
         response.setStatus(200);
         response.getOutputStream().write(rankingPicture.get());
+    }
+
+    @GetMapping("/game/{id}/event-ranking.png")
+    public void getEventRankingPicture(
+            @PathVariable("id") Game game,
+            @RequestParam(value = "startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+            @RequestParam(value = "endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
+            HttpServletResponse response) throws IOException {
+        BufferedImage image = this.rankingPicture.createRankingPicture(game, gameService.getEventRankingsOf(game, startDate, endDate));
+        response.setContentType("image/png");
+        response.setStatus(200);
+        response.getOutputStream().write(images.toBytesC(image));
     }
 
     @GetMapping("/player/{player}/signature.png")

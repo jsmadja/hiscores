@@ -2,13 +2,15 @@ package com.shmup.hiscores.services;
 
 import com.shmup.hiscores.dto.GameForm;
 import com.shmup.hiscores.models.*;
-import com.shmup.hiscores.repositories.GameCustomRepository;
 import com.shmup.hiscores.repositories.GameRepository;
+import com.shmup.hiscores.repositories.ScoreCustomRepository;
 import com.shmup.hiscores.repositories.ScoreRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 
@@ -19,9 +21,10 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class GameService {
 
+    private static final LocalDate FROM_THE_BEGINNING = LocalDate.EPOCH;
+    private static final LocalDate TO_THE_END = LocalDate.of(2050,1,1);
     private final GameRepository gameRepository;
-    private final GameCustomRepository gameCustomRepository;
-
+    private final ScoreCustomRepository scoreCustomRepository;
     private final ScoreRepository scoreRepository;
 
     @Deprecated
@@ -62,23 +65,23 @@ public class GameService {
     public List<Ranking> getRankingsOf(Game game) {
         List<Ranking> rankings = new ArrayList<>();
         if (game.isGeneralRanking()) {
-            rankings.add(createGeneralRanking(game));
+            rankings.add(createGeneralRanking(game, FROM_THE_BEGINNING, TO_THE_END));
         }
         if (!game.hasModes()) {
             if (!game.hasDifficulties()) {
-                rankings.add(createGeneralRanking(game));
+                rankings.add(createGeneralRanking(game, FROM_THE_BEGINNING, TO_THE_END));
             } else {
                 for (Difficulty difficulty : game.getDifficulties()) {
-                    rankings.add(new Ranking(findBestScoresByVIPPlayers(game, difficulty, null), difficulty));
+                    rankings.add(new Ranking(findBestScoresByVIPPlayers(game, difficulty, null, FROM_THE_BEGINNING, TO_THE_END), difficulty));
                 }
             }
         } else {
             for (Mode mode : game.getModes()) {
                 if (!game.hasDifficulties()) {
-                    rankings.add(new Ranking(findBestScoresByVIPPlayers(game, null, mode), mode));
+                    rankings.add(new Ranking(findBestScoresByVIPPlayers(game, null, mode, FROM_THE_BEGINNING, TO_THE_END), mode));
                 } else {
                     for (Difficulty difficulty : game.getDifficulties()) {
-                        rankings.add(new Ranking(findBestScoresByVIPPlayers(game, difficulty, mode), difficulty, mode));
+                        rankings.add(new Ranking(findBestScoresByVIPPlayers(game, difficulty, mode, FROM_THE_BEGINNING, TO_THE_END), difficulty, mode));
                     }
                 }
             }
@@ -86,27 +89,65 @@ public class GameService {
         return rankings;
     }
 
-    @Deprecated
-    public List<Ranking> updateRankingsOf(Game game) {
+    public List<Ranking> getEventRankingsOf(Game game, LocalDate startDate, LocalDate endDate) {
         List<Ranking> rankings = new ArrayList<>();
         if (game.isGeneralRanking()) {
-            rankings.add(createGeneralRanking(game));
+            rankings.add(createGeneralRanking(game, startDate, endDate));
         }
         if (!game.hasModes()) {
             if (!game.hasDifficulties()) {
-                rankings.add(createGeneralRanking(game));
+                rankings.add(createGeneralRanking(game, startDate, endDate));
             } else {
                 for (Difficulty difficulty : game.getDifficulties()) {
-                    rankings.add(new Ranking(findBestScoresByVIPPlayers(game, difficulty, null), difficulty));
+                    Collection<Score> bestScoresByVIPPlayers = findBestScoresByVIPPlayers(game, difficulty, null, startDate, endDate);
+                    rankings.add(new Ranking(overrideRanks(bestScoresByVIPPlayers), difficulty));
                 }
             }
         } else {
             for (Mode mode : game.getModes()) {
                 if (!game.hasDifficulties()) {
-                    rankings.add(new Ranking(findBestScoresByVIPPlayers(game, null, mode), mode));
+                    Collection<Score> bestScoresByVIPPlayers = findBestScoresByVIPPlayers(game, null, mode, startDate, endDate);
+                    rankings.add(new Ranking(overrideRanks(bestScoresByVIPPlayers), mode));
                 } else {
                     for (Difficulty difficulty : game.getDifficulties()) {
-                        rankings.add(new Ranking(findBestScoresByVIPPlayers(game, difficulty, mode), difficulty, mode));
+                        Collection<Score> bestScoresByVIPPlayers = findBestScoresByVIPPlayers(game, difficulty, mode, startDate, endDate);
+                        rankings.add(new Ranking(overrideRanks(bestScoresByVIPPlayers), difficulty, mode));
+                    }
+                }
+            }
+        }
+        return rankings;
+    }
+
+    private Collection<Score> overrideRanks(Collection<Score> bestScoresByVIPPlayers) {
+        final AtomicInteger rank = new AtomicInteger(1);
+        return bestScoresByVIPPlayers
+                .stream()
+                .peek(score -> score.setRank(rank.getAndAdd(1)))
+                .collect(toList());
+    }
+
+    @Deprecated
+    public List<Ranking> updateRankingsOf(Game game) {
+        List<Ranking> rankings = new ArrayList<>();
+        if (game.isGeneralRanking()) {
+            rankings.add(createGeneralRanking(game, FROM_THE_BEGINNING, TO_THE_END));
+        }
+        if (!game.hasModes()) {
+            if (!game.hasDifficulties()) {
+                rankings.add(createGeneralRanking(game, FROM_THE_BEGINNING, TO_THE_END));
+            } else {
+                for (Difficulty difficulty : game.getDifficulties()) {
+                    rankings.add(new Ranking(findBestScoresByVIPPlayers(game, difficulty, null, FROM_THE_BEGINNING, TO_THE_END), difficulty));
+                }
+            }
+        } else {
+            for (Mode mode : game.getModes()) {
+                if (!game.hasDifficulties()) {
+                    rankings.add(new Ranking(findBestScoresByVIPPlayers(game, null, mode, FROM_THE_BEGINNING, TO_THE_END), mode));
+                } else {
+                    for (Difficulty difficulty : game.getDifficulties()) {
+                        rankings.add(new Ranking(findBestScoresByVIPPlayers(game, difficulty, mode, FROM_THE_BEGINNING, TO_THE_END), difficulty, mode));
                     }
                 }
             }
@@ -119,8 +160,8 @@ public class GameService {
         return rankings;
     }
 
-    private Ranking createGeneralRanking(Game game) {
-        Ranking ranking = new Ranking(findBestScoresByVIPPlayers(game));
+    private Ranking createGeneralRanking(Game game, LocalDate startDate, LocalDate endDate) {
+        Ranking ranking = new Ranking(findBestScoresByVIPPlayers(game, startDate, endDate));
         List<Score> scores = new ArrayList<>();
         for (int rank = 0; rank < ranking.getScores().size(); rank++) {
             Score score = ranking.getScores().get(rank);
@@ -131,21 +172,21 @@ public class GameService {
         return generalRanking;
     }
 
-    private Collection<Score> findBestScoresByVIPPlayers(Game game) {
+    private Collection<Score> findBestScoresByVIPPlayers(Game game, LocalDate startDate, LocalDate endDate) {
         if (game.getScores() == null) {
             return new ArrayList<>();
         }
-        List<Score> scores = gameCustomRepository.findBestScoresByVIPPlayers(game);
-        return keepBestScoreByVIPPlayer(scores);
+        List<Score> scores = scoreCustomRepository.findBestScores(game, startDate, endDate);
+        return keepOnlyVIP(scores);
     }
 
     @Deprecated
-    public Collection<Score> findBestScoresByVIPPlayers(Game game, Difficulty difficulty, Mode mode) {
-        List<Score> scores = gameCustomRepository.findBestScoresByVIPPlayers(game, difficulty, mode);
-        return keepBestScoreByVIPPlayer(scores);
+    public Collection<Score> findBestScoresByVIPPlayers(Game game, Difficulty difficulty, Mode mode, LocalDate startDate, LocalDate endDate) {
+        List<Score> scores = scoreCustomRepository.findBestScores(game, difficulty, mode, startDate, endDate);
+        return keepOnlyVIP(scores);
     }
 
-    private Collection<Score> keepBestScoreByVIPPlayer(List<Score> scores) {
+    private Collection<Score> keepOnlyVIP(List<Score> scores) {
         Set<Player> players = new HashSet<>();
         return scores.stream().filter(score -> {
             if (players.contains(score.getPlayer())) {
@@ -239,4 +280,5 @@ public class GameService {
     public List<Game> getUnplayedGames(Player player) {
         return this.gameRepository.findByPlayerNot(player.getId());
     }
+
 }

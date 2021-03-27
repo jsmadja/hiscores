@@ -17,14 +17,14 @@ public class RankingPicture {
 
     public BufferedImage createRankingPicture(Game game, List<Ranking> rankings) {
         Collection<Difficulty> difficulties = new ArrayList<>(game.getDifficulties());
-        Collection<Mode> modes = new ArrayList<Mode>(game.getModes());
+        Collection<Mode> modes = new ArrayList<>(game.getModes());
         if (difficulties.isEmpty()) {
             difficulties.add(null);
         }
         if (modes.isEmpty()) {
             modes.add(null);
         }
-        List<PictureLine> pictureLines = new ArrayList<PictureLine>();
+        List<PictureLine> pictureLines = new ArrayList<>();
         for (Ranking ranking : rankings) {
             if (!ranking.getScores().isEmpty()) {
                 pictureLines.add(new BreakLine());

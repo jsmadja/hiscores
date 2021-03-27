@@ -37,27 +37,19 @@ public class CacheService {
     }
 
     public Optional<byte[]> getRankingPictureOf(Game game) {
-        Cache.ValueWrapper valueWrapper = getRankingPicturesCache().get(game.getId());
-        byte[] bytes = valueWrapper == null ? null : (byte[]) valueWrapper.get();
-        return Optional.ofNullable(bytes);
+        return toBytes(getRankingPicturesCache().get(game.getId()));
     }
 
     public Optional<byte[]> getSignaturePictureOf(Player player) {
-        Cache.ValueWrapper valueWrapper = getSignaturePicturesCache().get(player.getId());
-        byte[] bytes = valueWrapper == null ? null : (byte[]) valueWrapper.get();
-        return Optional.ofNullable(bytes);
+        return toBytes(getSignaturePicturesCache().get(player.getId()));
     }
 
     public Optional<byte[]> getMedalsPictureOf(Long shmupUserId) {
-        Cache.ValueWrapper valueWrapper = getMedalsPicturesCache().get(shmupUserId);
-        byte[] bytes = valueWrapper == null ? null : (byte[]) valueWrapper.get();
-        return Optional.ofNullable(bytes);
+        return toBytes(getMedalsPicturesCache().get(shmupUserId));
     }
 
     public Optional<byte[]> getVersusPictureOf(Player player) {
-        Cache.ValueWrapper valueWrapper = getVersusPicturesCache().get(player.getId());
-        byte[] bytes = valueWrapper == null ? null : (byte[]) valueWrapper.get();
-        return Optional.ofNullable(bytes);
+        return toBytes(getVersusPicturesCache().get(player.getId()));
     }
 
     public void removeRankingPictureOf(Game game) {
@@ -70,6 +62,11 @@ public class CacheService {
 
     public void removeMedalsPictureOf(Long shmupUserId) {
         getMedalsPicturesCache().evict(shmupUserId);
+    }
+
+    private Optional<byte[]> toBytes(Cache.ValueWrapper valueWrapper) {
+        byte[] bytes = valueWrapper == null ? null : (byte[]) valueWrapper.get();
+        return Optional.ofNullable(bytes);
     }
 
     private Cache getMedalsPicturesCache() {
@@ -87,4 +84,5 @@ public class CacheService {
     private Cache getVersusPicturesCache() {
         return cacheManager.getCache(VERSUS_PICTURES_CACHE);
     }
+
 }

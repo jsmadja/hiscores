@@ -1,7 +1,6 @@
 package com.shmup.hiscores.controllers;
 
 import com.shmup.hiscores.ContainerDatabaseTest;
-import com.shmup.hiscores.dto.GameSetting;
 import com.shmup.hiscores.dto.PlayerForm;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,8 @@ public class PlayersControllerIntegrationTest extends ContainerDatabaseTest {
         String jsonContent = """
                 [
                   {id:1,name:'anzymus'},
-                  {id:2,name:'Mickey'}
+                  {id:2,name:'Mickey'},
+                  {id:3,name:'Joe'}
                 ]
                 """;
         this.mvc.perform(get("/players")
