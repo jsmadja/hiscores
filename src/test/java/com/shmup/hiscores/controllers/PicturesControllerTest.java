@@ -128,6 +128,22 @@ class PicturesControllerTest {
     }
 
     @Test
+    public void should_refresh_ranking_picture_from_cache() throws IOException {
+        byte[] picture = new byte[0];
+        Game game = mock(Game.class);
+        when(cacheService.getRankingPictureOf(game)).thenReturn(Optional.of(picture));
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        ServletOutputStream outputStream = mock(ServletOutputStream.class);
+        when(response.getOutputStream()).thenReturn(outputStream);
+
+        platformsController.refreshRankingPicture(game, response);
+
+        verify(response).setContentType("image/png");
+        verify(response).setStatus(200);
+        verify(outputStream).write(picture);
+    }
+
+    @Test
     public void should_get_signature_picture_without_cache() throws IOException {
         byte[] picture = new byte[0];
         Player player = mock(Player.class);

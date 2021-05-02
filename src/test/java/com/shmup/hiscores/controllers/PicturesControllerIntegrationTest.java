@@ -47,4 +47,11 @@ public class PicturesControllerIntegrationTest extends ContainerDatabaseTest {
                 .andExpect(content().contentType(IMAGE_PNG));
     }
 
+    @Test
+    void refresh_ranking_picture() throws Exception {
+        this.mvc.perform(get("/game/1/ranking.png:refresh"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(IMAGE_PNG));
+    }
+
 }

@@ -55,6 +55,13 @@ public class PicturesController {
     }
 
     // for forum.shmup.com backward compatibility
+    @GetMapping("/game/{id}/ranking.png:refresh")
+    public void refreshRankingPicture(@PathVariable("id") Game game, HttpServletResponse response) throws IOException {
+        cacheService.removeRankingPictureOf(game);
+        getRankingPicture(game, response);
+    }
+
+    // for forum.shmup.com backward compatibility
     @GetMapping("/game/{id}/ranking.png")
     public void getRankingPicture(@PathVariable("id") Game game, HttpServletResponse response) throws IOException {
         Optional<byte[]> rankingPicture = cacheService.getRankingPictureOf(game);
