@@ -19,10 +19,10 @@ jobs:
           java-version: 15
       - name: Build with Maven
         run: mvn -B install --file pom.xml
-      - name: Run codacy-coverage-reporter
-        uses: codacy/codacy-coverage-reporter-action@master
-        with:
-          project-token: ${{ secrets.CODACY_TOKEN }}
+      #- name: Run codacy-coverage-reporter
+      #  uses: codacy/codacy-coverage-reporter-action@master
+      #  with:
+      #    project-token: ${{ secrets.CODACY_TOKEN }}
       - uses: actions/upload-artifact@v1
         with:
           name: de-sy-file
