@@ -46,6 +46,11 @@ public class PlayersController {
         return player.getScores();
     }
 
+    @GetMapping("/shmup-players/{shmupUserId}/scores")
+    public List<Score> getShmupPlayerScores(@PathVariable("shmupUserId") Long shmupUserId) {
+        return playerService.findByShmupUserId(shmupUserId).getScores();
+    }
+
     @PostMapping("/players")
     @ApiOperation(value = "create a new player")
     public ResponseEntity<PlayerDTO> createPlayer(@RequestAttribute(value = "player") Player player, @ApiParam(value = "The player to create", required = true) @Valid @RequestBody PlayerForm playerForm) {

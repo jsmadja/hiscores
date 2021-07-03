@@ -44,9 +44,20 @@ class PlayersControllerTest {
     @Test
     public void should_get_player_scores() {
         Player player = mock(Player.class);
-        when(player.getScores()).thenReturn(new ArrayList<Score>());
+        when(player.getScores()).thenReturn(new ArrayList<>());
 
         List<Score> scores = playersController.getPlayerScores(player);
+
+        assertThat(scores).isEqualTo(player.getScores());
+    }
+
+    @Test
+    public void should_get_shmup_player_scores() {
+        Player player = mock(Player.class);
+        when(player.getScores()).thenReturn(new ArrayList<>());
+        when(playerService.findByShmupUserId(1L)).thenReturn(player);
+
+        List<Score> scores = playersController.getShmupPlayerScores(1L);
 
         assertThat(scores).isEqualTo(player.getScores());
     }

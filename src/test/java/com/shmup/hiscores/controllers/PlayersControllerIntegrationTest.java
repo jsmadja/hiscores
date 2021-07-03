@@ -55,6 +55,14 @@ public class PlayersControllerIntegrationTest extends ContainerDatabaseTest {
     }
 
     @Test
+    void get_shmup_player_scores() throws Exception {
+        this.mvc.perform(get("/shmup-players/33489/scores")
+                .cookie(createShmupCookie())
+                .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void createPlayer() throws Exception {
         this.mvc.perform(post("/players")
                 .cookie(createShmupCookie())
